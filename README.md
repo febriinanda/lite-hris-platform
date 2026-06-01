@@ -53,18 +53,18 @@ Out of Scope:
 - JWT Authentication
 
 ## Features
-### Employee Management ⚪
-- Employee master data
-- Employment status
-- Position and department assignment
+### Employee Management 🟡
+- Employee master data 🟢
+- Employment status 🟢
+- Position and department assignment 🟢
 - Employee document management
 - Employee profile photo
 
-### Organization Management ⚪
-- Company
-- Branch
-- Department
-- Position
+### Organization Management 🟡
+- Company ⚪
+- Branch ⚪
+- Department 🟢
+- Position 🟢
 - Reporting structure
 
 ### Leave Management ⚪
