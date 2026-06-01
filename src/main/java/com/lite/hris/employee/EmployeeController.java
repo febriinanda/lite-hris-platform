@@ -1,5 +1,8 @@
 package com.lite.hris.employee;
 
+import com.lite.hris.employee.position.AssignmentDTO;
+import com.lite.hris.employee.position.EmployeePosition;
+import com.lite.hris.employee.position.EmployeePositionRepository;
 import com.lite.hris.employee.status.EmployeeStatus;
 import com.lite.hris.employee.status.EmployeeStatusRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class EmployeeController {
     private final EmployeeRepository repository;
+    private final EmployeePositionRepository positionRepository;
     private final EmployeeStatusRepository statusRepository;
 
     @GetMapping
@@ -44,6 +48,15 @@ public class EmployeeController {
             Employee e = byId.get();
             e.update(form);
             repository.save(e);
+        }else throw new RuntimeException("Employee is not found");
+    }
+
+    @PostMapping("/{id}/assign")
+    public void assign(@PathVariable long id, @RequestBody AssignmentDTO form){
+        Optional<Employee> byId = repository.findById(id);
+        if(byId.isPresent()){
+            EmployeePosition position = new EmployeePosition(byId.get(), form);
+            positionRepository.save(position);
         }else throw new RuntimeException("Employee is not found");
     }
 }
