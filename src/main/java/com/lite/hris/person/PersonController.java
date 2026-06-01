@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("person")
+@RequestMapping("/person")
 @RequiredArgsConstructor
 public class PersonController {
     private final PersonRepository repository;

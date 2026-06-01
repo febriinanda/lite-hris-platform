@@ -21,4 +21,10 @@ public class Employee {
     private String employeeNo;
     private LocalDate joinDate;
     private LocalDate resignDate;
+    private String resignReason;
+
+    public Employee(EmployeeJoinDTO form) {
+        this.person = form.getPerson();
+        this.joinDate = form.getJoinDate();
+    }
 }
