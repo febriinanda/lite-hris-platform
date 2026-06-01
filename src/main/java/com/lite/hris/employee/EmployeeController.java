@@ -36,8 +36,7 @@ public class EmployeeController {
         Optional<Employee> byId = repository.findById(id);
         if(byId.isPresent()){
             Employee e = byId.get();
-            e.setResignDate(form.getResignDate());
-            e.setResignReason(form.getReason());
+            e.update(form);
             repository.save(e);
         }else throw new RuntimeException("Employee is not found");
     }
