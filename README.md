@@ -57,12 +57,14 @@ Out of Scope:
 - Employee master data 🟢
 - Employment status 🟢
 - Position and department assignment 🟢
+- Company and branch assignment ⚪
 - Employee document management
 - Employee profile photo
+- Employee registration number
 
 ### Organization Management 🟡
-- Company ⚪
-- Branch ⚪
+- Company 🟢
+- Branch 🟢
 - Department 🟢
 - Position 🟢
 - Reporting structure
