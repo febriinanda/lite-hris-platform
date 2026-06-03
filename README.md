@@ -1,5 +1,5 @@
 # Lite HRIS Platform
-Enterprise-grade HRIS platform built with Spring Boot, PostgreSQL, Redis, Kafka and OAuth2 Authentication Server.
+Enterprise-grade HRIS platform built with Spring Boot, MySQL, Redis, Kafka and OAuth2 Authentication Server.
 
 ## Project Scope
 This project focuses on core HRIS functionalities.
@@ -57,14 +57,14 @@ Out of Scope:
 - Employee master data 🟢
 - Employment status 🟢
 - Position and department assignment 🟢
-- Company and branch assignment ⚪
+- Company and office assignment 🟢
 - Employee document management
-- Employee profile photo
-- Employee registration number
+- Employee profile photo ⚪
+- Employee registration number ⚪
 
 ### Organization Management 🟡
 - Company 🟢
-- Branch 🟢
+- Office 🟢
 - Department 🟢
 - Position 🟢
 - Reporting structure
@@ -76,8 +76,8 @@ Out of Scope:
 - Leave balance tracking
 - Leave approval workflow
 
-### Employee Self Service (ESS) ⚪
-- View profile
+### Employee Self Service (ESS) 🟡
+- View profile ⚪
 - Update personal information
 - Submit leave request
 - View attendance history
