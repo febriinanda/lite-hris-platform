@@ -5,6 +5,9 @@ import com.lite.hris.employee.position.EmployeePosition;
 import com.lite.hris.employee.position.EmployeePositionRepository;
 import com.lite.hris.employee.status.EmployeeStatus;
 import com.lite.hris.employee.status.EmployeeStatusRepository;
+import com.lite.hris.employee.workSite.DeploymentDTO;
+import com.lite.hris.employee.workSite.EmployeeWorkSite;
+import com.lite.hris.employee.workSite.EmployeeWorkSiteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +21,7 @@ public class EmployeeController {
     private final EmployeeRepository repository;
     private final EmployeePositionRepository positionRepository;
     private final EmployeeStatusRepository statusRepository;
+    private final EmployeeWorkSiteRepository workSiteRepository;
 
     @GetMapping
     public List<Employee> findAll(){
@@ -57,6 +61,15 @@ public class EmployeeController {
         if(byId.isPresent()){
             EmployeePosition position = new EmployeePosition(byId.get(), form);
             positionRepository.save(position);
+        }else throw new RuntimeException("Employee is not found");
+    }
+
+    @PostMapping("/{id}/work/site")
+    public void deploy(@PathVariable long id, @RequestBody DeploymentDTO form){
+        Optional<Employee> byId = repository.findById(id);
+        if(byId.isPresent()){
+            EmployeeWorkSite workSite = new EmployeeWorkSite(byId.get(), form);
+            workSiteRepository.save(workSite);
         }else throw new RuntimeException("Employee is not found");
     }
 }
