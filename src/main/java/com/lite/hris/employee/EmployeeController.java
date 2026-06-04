@@ -45,7 +45,7 @@ public class EmployeeController {
         statusRepository.save(employeeStatus);
     }
 
-    @DeleteMapping("/{id}")
+    @PutMapping("/{id}")
     public void update(@PathVariable long id, @RequestBody EmployeeResignDTO form){
         Optional<Employee> byId = repository.findById(id);
         if(byId.isPresent()){
