@@ -34,4 +34,8 @@ public class Employee {
         this.resignDate = form.getResignDate();
         this.resignReason = form.getReason();
     }
+
+    public void registrationNumber(NumberRegistrationDTO form) {
+        this.employeeNo = form.getNumber();
+    }
 }

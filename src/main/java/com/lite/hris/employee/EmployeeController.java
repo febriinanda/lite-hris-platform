@@ -9,6 +9,7 @@ import com.lite.hris.employee.workSite.DeploymentDTO;
 import com.lite.hris.employee.workSite.EmployeeWorkSite;
 import com.lite.hris.employee.workSite.EmployeeWorkSiteRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class EmployeeController {
     private final EmployeePositionRepository positionRepository;
     private final EmployeeStatusRepository statusRepository;
     private final EmployeeWorkSiteRepository workSiteRepository;
+    private final RegistrationNumberValidationService registrationNumberValidationService;
 
     @GetMapping
     public List<Employee> findAll(){
@@ -45,7 +47,21 @@ public class EmployeeController {
         statusRepository.save(employeeStatus);
     }
 
-    @DeleteMapping("/{id}")
+    @PatchMapping("/{id}/registration/number")
+    public void registerNumber(@PathVariable long id, @RequestBody @Validated NumberRegistrationDTO form){
+        boolean valid = registrationNumberValidationService.isValid(form.getNumber());
+        if(!valid)
+            throw new RuntimeException("Rules are not match");
+
+        Optional<Employee> byId = repository.findById(id);
+        if(byId.isPresent()){
+            Employee employee = byId.get();
+            employee.registrationNumber(form);
+            repository.save(employee);
+        }else throw new RuntimeException("Employee is not found");
+    }
+
+    @PutMapping("/{id}")
     public void update(@PathVariable long id, @RequestBody EmployeeResignDTO form){
         Optional<Employee> byId = repository.findById(id);
         if(byId.isPresent()){
