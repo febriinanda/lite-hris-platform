@@ -60,7 +60,7 @@ Out of Scope:
 - Company and office assignment 🟢
 - Employee document management
 - Employee profile photo ⚪
-- Employee registration number ⚪
+- Employee registration number 🟢
 
 ### Organization Management 🟡
 - Company 🟢
@@ -78,7 +78,7 @@ Out of Scope:
 
 ### Employee Self Service (ESS) 🟡
 - View profile ⚪
-- Update personal information
+- Update personal information ⚪
 - Submit leave request
 - View attendance history
 
