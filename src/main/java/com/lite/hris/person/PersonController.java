@@ -51,6 +51,16 @@ public class PersonController {
         }else throw new RuntimeException("Person is not found");
     }
 
+    @PatchMapping("/{id}/birthday")
+    public void birthday(@PathVariable long id, @RequestBody PersonDTO form){
+        Optional<Person> byId = repository.findById(id);
+        if(byId.isPresent()){
+            Person existed = byId.get();
+            existed.setBirthDate(form.getBirthDate());
+            repository.save(existed);
+        }else throw new RuntimeException("Person is not found");
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable long id){
         Optional<Person> byId = repository.findById(id);
