@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +37,40 @@ public class EmployeeController {
         Optional<Employee> byId = repository.findById(id);
         if(byId.isPresent()){
             return byId.get();
+        }else throw new RuntimeException("Employee is not found");
+    }
+
+    @GetMapping("/{id}/profile")
+    public EmployeeProfile profile(@PathVariable long id){
+        Optional<Employee> byId = repository.findById(id);
+        if(byId.isPresent()){
+            EmployeeProfile profile = new EmployeeProfile();
+            Employee employee = byId.get();
+
+            profile.setEmployee(employee);
+            List<EmployeePosition> positions = positionRepository.findByEmployee(employee);
+            List<EmployeeStatus> statuses = statusRepository.findByEmployee(employee);
+            List<EmployeeWorkSite> sites = workSiteRepository.findByEmployee(employee);
+            LocalDate now = LocalDate.now();
+            Optional<EmployeePosition> positionOptional = positions.stream().filter(o -> o.getStartDate().isBefore(now) && (o.getEndDate() == null || o.getEndDate().isAfter(now))).max(Comparator.comparing(EmployeePosition::getStartDate));
+            if(positionOptional.isPresent()){
+                EmployeePosition position = positionOptional.get();
+                profile.setPosition(position);
+            }
+
+            Optional<EmployeeStatus> statusOptional = statuses.stream().filter(o -> o.getStartDate().isBefore(now) && (o.getEndDate() == null || o.getEndDate().isAfter(now))).max(Comparator.comparing(EmployeeStatus::getStartDate));
+            if(statusOptional.isPresent()){
+                EmployeeStatus status = statusOptional.get();
+                profile.setCurrentStatus(status.getStatus());
+            }
+
+            Optional<EmployeeWorkSite> siteOptional = sites.stream().filter(o -> o.getStartDate().isBefore(now) && (o.getEndDate() == null || o.getEndDate().isAfter(now))).max(Comparator.comparing(EmployeeWorkSite::getStartDate));
+            if(siteOptional.isPresent()){
+                EmployeeWorkSite site = siteOptional.get();
+                profile.setWorkSite(site);
+            }
+
+            return profile;
         }else throw new RuntimeException("Employee is not found");
     }
 
