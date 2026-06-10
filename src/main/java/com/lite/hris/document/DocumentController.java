@@ -4,10 +4,8 @@ import com.lite.hris.document.personal.PersonalDocument;
 import com.lite.hris.document.personal.PersonalDocumentDTO;
 import com.lite.hris.document.personal.PersonalDocumentRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/document")
@@ -16,7 +14,7 @@ public class DocumentController {
     private final PersonalDocumentRepository personalDocumentRepository;
 
     @PostMapping("/personal")
-    public void personal(@RequestBody PersonalDocumentDTO form){
+    public void personal(@RequestPart("file") MultipartFile file, @RequestPart("request") PersonalDocumentDTO form){
         PersonalDocument doc = new PersonalDocument(form);
         personalDocumentRepository.save(doc);
     }
