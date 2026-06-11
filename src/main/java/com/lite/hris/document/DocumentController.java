@@ -3,6 +3,7 @@ package com.lite.hris.document;
 import com.lite.hris.document.personal.PersonalDocument;
 import com.lite.hris.document.personal.PersonalDocumentDTO;
 import com.lite.hris.document.personal.PersonalDocumentRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class DocumentController {
     private final PersonalDocumentRepository personalDocumentRepository;
 
     @PostMapping("/personal")
-    public void personal(@RequestPart(value = "file", required = false) MultipartFile file, @RequestPart("request") PersonalDocumentDTO form) throws IOException {
+    public void personal(@RequestPart(value = "file", required = false) MultipartFile file, @RequestPart("request") @Valid PersonalDocumentDTO form) throws IOException {
         PersonalDocument doc = new PersonalDocument(form);
         if(file != null && !file.isEmpty()){
             String ext = StringUtils.getFilenameExtension(file.getOriginalFilename());
