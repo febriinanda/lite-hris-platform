@@ -3,6 +3,9 @@ package com.lite.hris.document;
 import com.lite.hris.document.educational.EducationalDocument;
 import com.lite.hris.document.educational.EducationalDocumentDTO;
 import com.lite.hris.document.educational.EducationalDocumentRepository;
+import com.lite.hris.document.employment.EmploymentDocument;
+import com.lite.hris.document.employment.EmploymentDocumentDTO;
+import com.lite.hris.document.employment.EmploymentDocumentRepository;
 import com.lite.hris.document.personal.PersonalDocument;
 import com.lite.hris.document.personal.PersonalDocumentDTO;
 import com.lite.hris.document.personal.PersonalDocumentRepository;
@@ -27,6 +30,28 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public class DocumentController {
     private final PersonalDocumentRepository personalDocumentRepository;
     private final EducationalDocumentRepository educationalDocumentRepository;
+    private final EmploymentDocumentRepository employmentDocumentRepository;
+
+    @PostMapping("/employment")
+    public void employment(@RequestPart(value = "file", required = false) MultipartFile file
+            , @RequestPart("request") @Valid EmploymentDocumentDTO form) throws IOException {
+        EmploymentDocument doc = new EmploymentDocument(form);
+        if(file != null && !file.isEmpty()){
+            String ext = StringUtils.getFilenameExtension(file.getOriginalFilename());
+            String fileName = UUID.randomUUID().toString();
+            String newFileName = fileName+"."+ext;
+            Path documentStorage = Paths.get("storage/documents");
+            Files.createDirectories(documentStorage);
+            Path path = documentStorage.resolve(newFileName);
+            Files.copy(file.getInputStream(), path, REPLACE_EXISTING);
+
+            doc.setFileName(newFileName);
+            doc.setFilePath(path.toString());
+            doc.setFileSize(file.getSize());
+            doc.setUploadDate(LocalDateTime.now());
+        }
+        employmentDocumentRepository.save(doc);
+    }
 
     @PostMapping("/educational")
     public void educational(@RequestPart(value = "file", required = false) MultipartFile file
