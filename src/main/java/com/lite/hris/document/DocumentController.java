@@ -1,5 +1,8 @@
 package com.lite.hris.document;
 
+import com.lite.hris.document.certification.CertificationDocument;
+import com.lite.hris.document.certification.CertificationDocumentDTO;
+import com.lite.hris.document.certification.CertificationDocumentRepository;
 import com.lite.hris.document.educational.EducationalDocument;
 import com.lite.hris.document.educational.EducationalDocumentDTO;
 import com.lite.hris.document.educational.EducationalDocumentRepository;
@@ -27,7 +30,28 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public class DocumentController {
     private final PersonalDocumentRepository personalDocumentRepository;
     private final EducationalDocumentRepository educationalDocumentRepository;
+    private final CertificationDocumentRepository certificationDocumentRepository;
 
+    @PostMapping("/certification")
+    public void certification(@RequestPart(value = "file", required = false) MultipartFile file
+            , @RequestPart("request") @Valid CertificationDocumentDTO form) throws IOException {
+        CertificationDocument doc = new CertificationDocument(form);
+        if(file != null && !file.isEmpty()){
+            String ext = StringUtils.getFilenameExtension(file.getOriginalFilename());
+            String fileName = UUID.randomUUID().toString();
+            String newFileName = fileName+"."+ext;
+            Path documentStorage = Paths.get("storage/documents");
+            Files.createDirectories(documentStorage);
+            Path path = documentStorage.resolve(newFileName);
+            Files.copy(file.getInputStream(), path, REPLACE_EXISTING);
+
+            doc.setFileName(newFileName);
+            doc.setFilePath(path.toString());
+            doc.setFileSize(file.getSize());
+            doc.setUploadDate(LocalDateTime.now());
+        }
+        certificationDocumentRepository.save(doc);
+    }
     @PostMapping("/educational")
     public void educational(@RequestPart(value = "file", required = false) MultipartFile file
             , @RequestPart("request") @Valid EducationalDocumentDTO form) throws IOException {
