@@ -1,5 +1,8 @@
 package com.lite.hris.document;
 
+import com.lite.hris.document.educational.EducationalDocument;
+import com.lite.hris.document.educational.EducationalDocumentDTO;
+import com.lite.hris.document.educational.EducationalDocumentRepository;
 import com.lite.hris.document.personal.PersonalDocument;
 import com.lite.hris.document.personal.PersonalDocumentDTO;
 import com.lite.hris.document.personal.PersonalDocumentRepository;
@@ -23,9 +26,32 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 @RequiredArgsConstructor
 public class DocumentController {
     private final PersonalDocumentRepository personalDocumentRepository;
+    private final EducationalDocumentRepository educationalDocumentRepository;
+
+    @PostMapping("/educational")
+    public void educational(@RequestPart(value = "file", required = false) MultipartFile file
+            , @RequestPart("request") @Valid EducationalDocumentDTO form) throws IOException {
+        EducationalDocument doc = new EducationalDocument(form);
+        if(file != null && !file.isEmpty()){
+            String ext = StringUtils.getFilenameExtension(file.getOriginalFilename());
+            String fileName = UUID.randomUUID().toString();
+            String newFileName = fileName+"."+ext;
+            Path documentStorage = Paths.get("storage/documents");
+            Files.createDirectories(documentStorage);
+            Path path = documentStorage.resolve(newFileName);
+            Files.copy(file.getInputStream(), path, REPLACE_EXISTING);
+
+            doc.setFileName(newFileName);
+            doc.setFilePath(path.toString());
+            doc.setFileSize(file.getSize());
+            doc.setUploadDate(LocalDateTime.now());
+        }
+        educationalDocumentRepository.save(doc);
+    }
 
     @PostMapping("/personal")
-    public void personal(@RequestPart(value = "file", required = false) MultipartFile file, @RequestPart("request") @Valid PersonalDocumentDTO form) throws IOException {
+    public void personal(@RequestPart(value = "file", required = false) MultipartFile file
+            , @RequestPart("request") @Valid PersonalDocumentDTO form) throws IOException {
         PersonalDocument doc = new PersonalDocument(form);
         if(file != null && !file.isEmpty()){
             String ext = StringUtils.getFilenameExtension(file.getOriginalFilename());
