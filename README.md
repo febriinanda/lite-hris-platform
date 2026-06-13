@@ -58,7 +58,7 @@ Out of Scope:
 - Employment status 🟢
 - Position and department assignment 🟢
 - Company and office assignment 🟢
-- Employee document management ⚪
+- Employee document management 🟡
 - Employee profile photo ⚪
 - Employee registration number 🟢
 
