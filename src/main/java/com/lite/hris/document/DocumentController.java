@@ -36,6 +36,10 @@ public class DocumentController {
     @PostMapping("/employment")
     public void employment(@RequestPart(value = "file", required = false) MultipartFile file
             , @RequestPart("request") @Valid EmploymentDocumentDTO form) throws IOException {
+        DocumentCategory category = form.getCategory();
+        if(!category.equals(DocumentCategory.CONTRACT_SIGNED))
+            throw new RuntimeException("This category is not allowed in this endpoint");
+
         EmploymentDocument doc = new EmploymentDocument(form);
         fileUploadService.upload(doc, file);
         employmentDocumentRepository.save(doc);
@@ -44,6 +48,10 @@ public class DocumentController {
     @PostMapping("/certification")
     public void certification(@RequestPart(value = "file", required = false) MultipartFile file
             , @RequestPart("request") @Valid CertificationDocumentDTO form) throws IOException {
+        DocumentCategory category = form.getCategory();
+        if(!category.equals(DocumentCategory.CERTIFICATION))
+            throw new RuntimeException("This category is not allowed in this endpoint");
+
         CertificationDocument doc = new CertificationDocument(form);
         fileUploadService.upload(doc, file);
         certificationDocumentRepository.save(doc);
@@ -51,6 +59,10 @@ public class DocumentController {
     @PostMapping("/educational")
     public void educational(@RequestPart(value = "file", required = false) MultipartFile file
             , @RequestPart("request") @Valid EducationalDocumentDTO form) throws IOException {
+        DocumentCategory category = form.getCategory();
+        if(!category.equals(DocumentCategory.FORMAL_EDUCATION) && !category.equals(DocumentCategory.INFORMAL_EDUCATION))
+            throw new RuntimeException("This category is not allowed in this endpoint");
+
         EducationalDocument doc = new EducationalDocument(form);
         fileUploadService.upload(doc, file);
         educationalDocumentRepository.save(doc);
@@ -59,6 +71,10 @@ public class DocumentController {
     @PostMapping("/personal")
     public void personal(@RequestPart(value = "file", required = false) MultipartFile file
             , @RequestPart("request") @Valid PersonalDocumentDTO form) throws IOException {
+        DocumentCategory category = form.getCategory();
+        if(!category.equals(DocumentCategory.CITIZENSHIP) && !category.equals(DocumentCategory.TAX) && !category.equals(DocumentCategory.FAMILY_REGISTRATION))
+            throw new RuntimeException("This category is not allowed in this endpoint");
+
         PersonalDocument doc = new PersonalDocument(form);
         fileUploadService.upload(doc, file);
         personalDocumentRepository.save(doc);
