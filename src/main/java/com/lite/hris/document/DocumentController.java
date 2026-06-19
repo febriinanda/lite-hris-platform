@@ -37,7 +37,7 @@ public class DocumentController {
     public void employment(@RequestPart(value = "file", required = false) MultipartFile file
             , @RequestPart("request") @Valid EmploymentDocumentDTO form) throws IOException {
         DocumentCategory category = form.getCategory();
-        if(!category.equals(DocumentCategory.CONTRACT_SIGNED))
+        if(!category.getGroup().equals("employment"))
             throw new RuntimeException("This category is not allowed in this endpoint");
 
         EmploymentDocument doc = new EmploymentDocument(form);
@@ -49,7 +49,7 @@ public class DocumentController {
     public void certification(@RequestPart(value = "file", required = false) MultipartFile file
             , @RequestPart("request") @Valid CertificationDocumentDTO form) throws IOException {
         DocumentCategory category = form.getCategory();
-        if(!category.equals(DocumentCategory.CERTIFICATION))
+        if(!category.getGroup().equals("certification"))
             throw new RuntimeException("This category is not allowed in this endpoint");
 
         CertificationDocument doc = new CertificationDocument(form);
@@ -60,7 +60,8 @@ public class DocumentController {
     public void educational(@RequestPart(value = "file", required = false) MultipartFile file
             , @RequestPart("request") @Valid EducationalDocumentDTO form) throws IOException {
         DocumentCategory category = form.getCategory();
-        if(!category.equals(DocumentCategory.FORMAL_EDUCATION) && !category.equals(DocumentCategory.INFORMAL_EDUCATION))
+
+        if(!category.getGroup().equals("educational"))
             throw new RuntimeException("This category is not allowed in this endpoint");
 
         EducationalDocument doc = new EducationalDocument(form);
@@ -72,7 +73,7 @@ public class DocumentController {
     public void personal(@RequestPart(value = "file", required = false) MultipartFile file
             , @RequestPart("request") @Valid PersonalDocumentDTO form) throws IOException {
         DocumentCategory category = form.getCategory();
-        if(!category.equals(DocumentCategory.CITIZENSHIP) && !category.equals(DocumentCategory.TAX) && !category.equals(DocumentCategory.FAMILY_REGISTRATION))
+        if(!category.getGroup().equals("personal"))
             throw new RuntimeException("This category is not allowed in this endpoint");
 
         PersonalDocument doc = new PersonalDocument(form);

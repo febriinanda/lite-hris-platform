@@ -15,7 +15,7 @@ public enum DocumentCategory {
     private final String name;
     private final boolean required;
     private final boolean multiples;
-    private String group;
+    private final String group;
 
     DocumentCategory(String name, boolean required, boolean multiples, String group) {
         this.name = name;
