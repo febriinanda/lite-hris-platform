@@ -1,8 +1,11 @@
 package com.lite.hris.person;
 
+import com.lite.hris.FileUpload.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PersonController {
     private final PersonRepository repository;
+    private final FileUploadService fileUploadService;
 
     @GetMapping
     public List<Person> findAll(){
@@ -79,5 +83,15 @@ public class PersonController {
             existed.setDeleted(true);
             repository.save(existed);
         }else throw new RuntimeException("Person is not found");
+    }
+
+    @PatchMapping("/{id}/photo/profile")
+    public void uploadPhotoProfile(@PathVariable long id, @RequestPart("file")MultipartFile file) throws IOException {
+        Optional<Person> byId = repository.findById(id);
+        if(byId.isPresent()){
+            Person person = byId.get();
+            fileUploadService.photoProfile(person, file);
+            repository.save(person);
+        }
     }
 }
