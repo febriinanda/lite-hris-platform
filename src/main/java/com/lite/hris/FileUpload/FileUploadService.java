@@ -16,11 +16,15 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 @Service
 public class FileUploadService {
     public void upload(HasFileUpload doc, MultipartFile file) throws IOException {
+        handle(doc,file,"storage/documents");
+    }
+
+    private void handle(HasFileUpload doc, MultipartFile file, String uploadDir) throws IOException {
         if(file != null && !file.isEmpty()){
             String ext = StringUtils.getFilenameExtension(file.getOriginalFilename());
             String fileName = UUID.randomUUID().toString();
             String newFileName = fileName+"."+ext;
-            Path documentStorage = Paths.get("storage/documents");
+            Path documentStorage = Paths.get(uploadDir);
             Files.createDirectories(documentStorage);
             Path path = documentStorage.resolve(newFileName);
             Files.copy(file.getInputStream(), path, REPLACE_EXISTING);
@@ -33,19 +37,6 @@ public class FileUploadService {
     }
 
     public void photoProfile(HasFileUpload p, MultipartFile file) throws IOException {
-        if(file != null && !file.isEmpty()){
-            String ext = StringUtils.getFilenameExtension(file.getOriginalFilename());
-            String fileName = UUID.randomUUID().toString();
-            String newFileName = fileName+"."+ext;
-            Path documentStorage = Paths.get("storage/photo-profile");
-            Files.createDirectories(documentStorage);
-            Path path = documentStorage.resolve(newFileName);
-            Files.copy(file.getInputStream(), path, REPLACE_EXISTING);
-
-            p.setFileName(newFileName);
-            p.setFilePath(path.toString());
-            p.setFileSize(file.getSize());
-            p.setUploadDate(LocalDateTime.now());
-        }
+        handle(p, file, "storage/photo-profile");
     }
 }
