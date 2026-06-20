@@ -1,5 +1,6 @@
 package com.lite.hris.document.employment;
 
+import com.lite.hris.FileUpload.HasFileUpload;
 import com.lite.hris.document.DocumentCategory;
 import com.lite.hris.employee.Employee;
 import jakarta.persistence.*;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @Table(name = "employment_document")
 @Data
 @NoArgsConstructor
-public class EmploymentDocument {
+public class EmploymentDocument implements HasFileUpload {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
