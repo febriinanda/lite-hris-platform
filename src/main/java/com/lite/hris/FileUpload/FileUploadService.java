@@ -1,6 +1,5 @@
 package com.lite.hris.FileUpload;
 
-import com.lite.hris.document.employment.EmploymentDocument;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,11 +16,15 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 @Service
 public class FileUploadService {
     public void upload(HasFileUpload doc, MultipartFile file) throws IOException {
+        handle(doc,file,"storage/documents");
+    }
+
+    private void handle(HasFileUpload doc, MultipartFile file, String uploadDir) throws IOException {
         if(file != null && !file.isEmpty()){
             String ext = StringUtils.getFilenameExtension(file.getOriginalFilename());
             String fileName = UUID.randomUUID().toString();
             String newFileName = fileName+"."+ext;
-            Path documentStorage = Paths.get("storage/documents");
+            Path documentStorage = Paths.get(uploadDir);
             Files.createDirectories(documentStorage);
             Path path = documentStorage.resolve(newFileName);
             Files.copy(file.getInputStream(), path, REPLACE_EXISTING);
@@ -31,5 +34,9 @@ public class FileUploadService {
             doc.setFileSize(file.getSize());
             doc.setUploadDate(LocalDateTime.now());
         }
+    }
+
+    public void photoProfile(HasFileUpload p, MultipartFile file) throws IOException {
+        handle(p, file, "storage/photo-profile");
     }
 }
