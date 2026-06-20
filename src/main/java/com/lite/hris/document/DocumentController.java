@@ -13,6 +13,7 @@ import com.lite.hris.document.employment.EmploymentDocumentRepository;
 import com.lite.hris.document.personal.PersonalDocument;
 import com.lite.hris.document.personal.PersonalDocumentDTO;
 import com.lite.hris.document.personal.PersonalDocumentRepository;
+import com.lite.hris.exception.DocumentCategoryException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +39,7 @@ public class DocumentController {
             , @RequestPart("request") @Valid EmploymentDocumentDTO form) throws IOException {
         DocumentCategory category = form.getCategory();
         if(!category.getGroup().equals("employment"))
-            throw new RuntimeException("This category is not allowed in this endpoint");
+            throw new DocumentCategoryException("This category is not allowed in this endpoint");
 
         EmploymentDocument doc = new EmploymentDocument(form);
         fileUploadService.upload(doc, file);
@@ -50,7 +51,7 @@ public class DocumentController {
             , @RequestPart("request") @Valid CertificationDocumentDTO form) throws IOException {
         DocumentCategory category = form.getCategory();
         if(!category.getGroup().equals("certification"))
-            throw new RuntimeException("This category is not allowed in this endpoint");
+            throw new DocumentCategoryException("This category is not allowed in this endpoint");
 
         CertificationDocument doc = new CertificationDocument(form);
         fileUploadService.upload(doc, file);
@@ -62,7 +63,7 @@ public class DocumentController {
         DocumentCategory category = form.getCategory();
 
         if(!category.getGroup().equals("educational"))
-            throw new RuntimeException("This category is not allowed in this endpoint");
+            throw new DocumentCategoryException("This category is not allowed in this endpoint");
 
         EducationalDocument doc = new EducationalDocument(form);
         fileUploadService.upload(doc, file);
@@ -74,7 +75,7 @@ public class DocumentController {
             , @RequestPart("request") @Valid PersonalDocumentDTO form) throws IOException {
         DocumentCategory category = form.getCategory();
         if(!category.getGroup().equals("personal"))
-            throw new RuntimeException("This category is not allowed in this endpoint");
+            throw new DocumentCategoryException("This category is not allowed in this endpoint");
 
         PersonalDocument doc = new PersonalDocument(form);
         fileUploadService.upload(doc, file);
