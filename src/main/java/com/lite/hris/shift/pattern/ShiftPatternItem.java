@@ -23,4 +23,10 @@ public class ShiftPatternItem {
     @ManyToOne
     @JoinColumn(name = "shift_id")
     private Shift shift;
+
+    public ShiftPatternItem(ShiftPatternItemDTO o, ShiftPattern sp) {
+        this.pattern = sp;
+        this.sequence = o.getSequence();
+        this.shift = o.getShift();
+    }
 }

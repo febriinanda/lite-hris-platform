@@ -18,4 +18,11 @@ public class ShiftPattern {
     private int cycleLength;
     private String description;
     private boolean deleted;
+
+    public ShiftPattern(ShiftPatternDTO form) {
+        this.code = form.getCode();
+        this.name = form.getName();
+        this.cycleLength = form.getCycleLength();
+        this.description = form.getDescription();
+    }
 }
