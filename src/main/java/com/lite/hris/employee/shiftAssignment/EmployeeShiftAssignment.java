@@ -26,4 +26,10 @@ public class EmployeeShiftAssignment {
     private ShiftPattern pattern;
 
     private LocalDate effectiveDate;
+
+    public EmployeeShiftAssignment(ShiftAssignmentDTO form, Employee employee) {
+        this.employee = employee;
+        this.pattern = form.getPattern();
+        this.effectiveDate = form.getEffectiveDate();
+    }
 }
