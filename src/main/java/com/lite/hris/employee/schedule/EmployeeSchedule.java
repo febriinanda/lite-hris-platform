@@ -1,6 +1,7 @@
 package com.lite.hris.employee.schedule;
 
 import com.lite.hris.employee.Employee;
+import com.lite.hris.shift.Shift;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,4 +29,12 @@ public class EmployeeSchedule {
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
+
+    public void setup(Shift shift) {
+        this.startDate = this.scheduleDate.atTime(shift.getStartTime());
+        this.endDate = shift.isCrossDay()?this.scheduleDate.atTime(shift.getEndTime()).plusDays(1):this.scheduleDate.atTime(shift.getEndTime());
+        this.breakDuration = shift.getBreakDuration();
+        this.off = false;
+        this.code = shift.getCode();
+    }
 }
