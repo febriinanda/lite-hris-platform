@@ -12,6 +12,6 @@ public class ShiftDTO {
     private String name;
     private LocalTime startTime;
     private LocalTime endTime;
-    private long breakDuration;
+    private int breakDuration;
     private boolean crossDay;
 }

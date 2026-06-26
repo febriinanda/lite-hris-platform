@@ -19,7 +19,7 @@ public class Shift {
     private String name;
     private LocalTime startTime;
     private LocalTime endTime;
-    private long breakDuration;
+    private int breakDuration;
     private boolean crossDay;
     private boolean deleted;
 
