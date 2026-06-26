@@ -26,7 +26,7 @@ public class EmployeeScheduleController {
     private final ShiftPatternItemRepository shiftPatternItemRepository;
     private final EmployeeScheduleRepository scheduleRepository;
 
-    @PostMapping("/{id}/generate")
+    @PostMapping("/{id}/schedule/generate")
     public void generate(@PathVariable long id, @RequestBody GenerateShiftDTO form){
         Optional<Employee> byId = repository.findById(id);
         if(byId.isPresent()){
