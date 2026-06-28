@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface EmployeeScheduleRepository extends JpaRepository<EmployeeSchedule, Long> {
     List<EmployeeSchedule> findByEmployeeAndScheduleDateBetween(Employee employee, LocalDate s, LocalDate e);
+
+    List<EmployeeSchedule> findByScheduleDate(LocalDate scheduleDate);
 }
