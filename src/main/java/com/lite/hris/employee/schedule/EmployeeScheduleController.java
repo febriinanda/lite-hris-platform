@@ -9,6 +9,7 @@ import com.lite.hris.shift.pattern.ShiftPatternItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,17 @@ public class EmployeeScheduleController {
     private final EmployeeShiftPatternRepository shiftPatternRepository;
     private final ShiftPatternItemRepository shiftPatternItemRepository;
     private final EmployeeScheduleRepository scheduleRepository;
+
+    @GetMapping("/{id}/schedule")
+    public List<EmployeeSchedule> getSchedules(
+            @PathVariable long id,
+            @RequestParam LocalDate start,
+            @RequestParam LocalDate end){
+        Optional<Employee> byId = repository.findById(id);
+        if(byId.isPresent()){
+            return scheduleRepository.findByEmployeeAndScheduleDateBetween(byId.get(), start, end);
+        }else throw new RuntimeException("This employee is not found");
+    }
 
     @PostMapping("/{id}/schedule/generate")
     public void generate(@PathVariable long id, @RequestBody GenerateShiftDTO form){
