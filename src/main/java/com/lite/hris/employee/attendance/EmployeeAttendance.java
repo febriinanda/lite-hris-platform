@@ -1,5 +1,7 @@
 package com.lite.hris.employee.attendance;
 
+import com.lite.hris.attendance.AttendanceVerificationRequest;
+import com.lite.hris.employee.Employee;
 import com.lite.hris.employee.schedule.EmployeeSchedule;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -32,6 +34,13 @@ public class EmployeeAttendance {
     @Enumerated(EnumType.STRING)
     private VerificationStatus verificationStatus;
 
+    @ManyToOne
+    @JoinColumn(name = "verifier_id")
+    private Employee verifiedBy;
+
+    private LocalDateTime verifiedAt;
+    private String verificationNote;
+
     public EmployeeAttendance(EmployeeSchedule s, VerificationStatus verificationStatus) {
         this.schedule = s;
         this.attendanceDate = s.getScheduleDate();
@@ -60,5 +69,12 @@ public class EmployeeAttendance {
                 }
             }
         }
+    }
+
+    public void verified(AttendanceVerificationRequest form) {
+        this.verificationStatus = VerificationStatus.VERIFIED;
+        this.verifiedBy = form.getVerifiedBy();
+        this.verifiedAt = LocalDateTime.now();
+        this.verificationNote = form.getNote();
     }
 }

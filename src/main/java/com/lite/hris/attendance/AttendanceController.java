@@ -6,14 +6,12 @@ import com.lite.hris.employee.attendance.VerificationStatus;
 import com.lite.hris.employee.schedule.EmployeeSchedule;
 import com.lite.hris.employee.schedule.EmployeeScheduleRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -41,5 +39,15 @@ public class AttendanceController {
         }
 
         employeeAttendanceRepository.saveAll(changes);
+    }
+
+    @PatchMapping("/{id}/verify")
+    public void verify(@PathVariable long id, @RequestBody AttendanceVerificationRequest form){
+        Optional<EmployeeAttendance> byId = employeeAttendanceRepository.findById(id);
+        if(byId.isPresent()){
+            EmployeeAttendance a = byId.get();
+            a.verified(form);
+            employeeAttendanceRepository.save(a);
+        }else throw new RuntimeException("This attendance is not exist");
     }
 }
