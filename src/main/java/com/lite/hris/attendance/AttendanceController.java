@@ -26,7 +26,7 @@ public class AttendanceController {
     @PostMapping("/process")
     public void process(@RequestBody AttendanceProcessRequest form){
         List<EmployeeSchedule> byScheduleDate = employeeScheduleRepository.findByScheduleDate(form.getScheduleDate());
-        Map<Long, EmployeeAttendance> attendanceMap = employeeAttendanceRepository.findBySchedule(byScheduleDate).stream()
+        Map<Long, EmployeeAttendance> attendanceMap = employeeAttendanceRepository.findByScheduleIn(byScheduleDate).stream()
                 .collect(Collectors.toMap(o -> o.getSchedule().getId(), Function.identity()));
 
         List<EmployeeAttendance> changes = new ArrayList<>();

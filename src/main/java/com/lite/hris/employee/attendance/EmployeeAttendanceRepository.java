@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface EmployeeAttendanceRepository extends JpaRepository<EmployeeAttendance, Long> {
-    List<EmployeeAttendance> findBySchedule(List<EmployeeSchedule> schedules);
+    List<EmployeeAttendance> findByScheduleIn(List<EmployeeSchedule> schedules);
 }

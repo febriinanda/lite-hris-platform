@@ -42,6 +42,7 @@ public class EmployeeAttendance {
         if(this.verificationStatus.equals(VerificationStatus.VERIFIED) || this.verificationStatus.equals(VerificationStatus.AUTO_VERIFIED))
             return;
 
+        this.verificationStatus = VerificationStatus.PENDING;
         if(schedule.isOff()){
             this.status = AttendanceStatus.OFF;
             this.verificationStatus = VerificationStatus.AUTO_VERIFIED;
