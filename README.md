@@ -53,13 +53,13 @@ Out of Scope:
 - JWT Authentication
 
 ## Features
-### Employee Management 🟡
+### Employee Management 🟢
 - Employee master data 🟢
 - Employment status 🟢
 - Position and department assignment 🟢
 - Company and office assignment 🟢
-- Employee document management 🟡
-- Employee profile photo ⚪
+- Employee document management 🟢
+- Employee profile photo 🟢
 - Employee registration number 🟢
 
 ### Organization Management 🟡
