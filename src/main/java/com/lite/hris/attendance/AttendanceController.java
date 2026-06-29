@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 public class AttendanceController {
     private final EmployeeScheduleRepository employeeScheduleRepository;
     private final EmployeeAttendanceRepository employeeAttendanceRepository;
+    private final AttendanceLogRepository attendanceLogRepository;
     @PostMapping("/process")
     public void process(@RequestBody AttendanceProcessRequest form){
         List<EmployeeSchedule> byScheduleDate = employeeScheduleRepository.findByScheduleDate(form.getScheduleDate());
@@ -49,5 +50,11 @@ public class AttendanceController {
             a.verified(form);
             employeeAttendanceRepository.save(a);
         }else throw new RuntimeException("This attendance is not exist");
+    }
+
+    @PostMapping("/clock")
+    public void clock(@RequestBody AttendanceClockRequest form){
+        AttendanceLog log = new AttendanceLog(form);
+        attendanceLogRepository.save(log);
     }
 }
