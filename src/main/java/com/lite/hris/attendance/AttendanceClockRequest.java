@@ -1,5 +1,6 @@
 package com.lite.hris.attendance;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.lite.hris.employee.Employee;
 import lombok.Data;
@@ -12,5 +13,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class AttendanceClockRequest {
     private Employee employee;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime clock;
 }
