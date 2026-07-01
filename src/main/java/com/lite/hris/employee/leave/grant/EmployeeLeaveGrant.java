@@ -26,5 +26,16 @@ public class EmployeeLeaveGrant {
     private LocalDate earnedDate;
     private LocalDate expireDate;
     private int extensionCount;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private LeaveGrantStatus status;
+
+    public EmployeeLeaveGrant(LeaveBalanceGrantRequest form) {
+        this.employee = form.getEmployee();
+        this.grantedDays = form.getGrantedDays();
+        this.year = form.getYear();
+        this.earnedDate = form.getEarnedDate();
+        this.expireDate = form.getExpireDate();
+        this.status = LeaveGrantStatus.ACTIVE;
+    }
 }
