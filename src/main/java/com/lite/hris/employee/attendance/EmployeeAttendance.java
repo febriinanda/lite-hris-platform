@@ -1,5 +1,6 @@
 package com.lite.hris.employee.attendance;
 
+import com.lite.hris.attendance.AttendanceLog;
 import com.lite.hris.attendance.AttendanceVerificationRequest;
 import com.lite.hris.employee.Employee;
 import com.lite.hris.employee.schedule.EmployeeSchedule;
@@ -9,6 +10,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
 
 @Data
 @Entity
@@ -76,5 +79,28 @@ public class EmployeeAttendance {
         this.verifiedBy = form.getVerifiedBy();
         this.verifiedAt = LocalDateTime.now();
         this.verificationNote = form.getNote();
+    }
+
+    public void updateClock(List<AttendanceLog> logs) {
+        if(this.verificationStatus == VerificationStatus.VERIFIED || this.verificationStatus == VerificationStatus.AUTO_VERIFIED)
+            return;
+
+        if(this.schedule.getStartDate() == null || this.schedule.getEndDate() == null)
+            return;
+
+        int threshold = 2;
+        LocalDateTime min1 = this.schedule.getStartDate().minusHours(threshold);
+        LocalDateTime min2 = this.schedule.getStartDate().plusHours(threshold);
+
+        logs.stream().filter(o->min1.isBefore(o.getTime()) && min2.isAfter(o.getTime()))
+                .min(Comparator.comparing(AttendanceLog::getTime))
+                .ifPresent(o->this.clockIn = o.getTime());
+
+        LocalDateTime max1 = this.schedule.getEndDate().minusHours(threshold);
+        LocalDateTime max2 = this.schedule.getEndDate().plusHours(threshold);
+
+        logs.stream().filter(o->max1.isBefore(o.getTime()) && max2.isAfter(o.getTime()))
+                .max(Comparator.comparing(AttendanceLog::getTime))
+                .ifPresent(o->this.clockOut = o.getTime());
     }
 }
