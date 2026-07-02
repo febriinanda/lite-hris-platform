@@ -2,9 +2,13 @@ package com.lite.hris.employee.leave.grant;
 
 import com.lite.hris.employee.Employee;
 import com.lite.hris.employee.EmployeeRepository;
+import com.lite.hris.employee.leave.transaction.EmployeeLeaveTransaction;
+import com.lite.hris.employee.leave.transaction.LeaveReferenceType;
+import com.lite.hris.employee.leave.transaction.LeaveTransactionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RestController
@@ -19,6 +23,13 @@ public class EmployeeLeaveGrantController {
         Optional<Employee> byId = employeeRepository.findById(id);
         if(byId.isPresent()){
             EmployeeLeaveGrant grant = new EmployeeLeaveGrant(form);
+            EmployeeLeaveTransaction t = new EmployeeLeaveTransaction();
+            t.setEmployee(form.getEmployee());
+            t.setGrant(grant);
+            t.setAmount(form.getGrantedDays());
+            t.setTransactionType(LeaveTransactionType.ENTITLEMENT);
+            t.setReferenceType(LeaveReferenceType.SYSTEM);
+            t.setCreatedAt(LocalDateTime.now());
             employeeLeaveGrantRepository.save(grant);
         }else throw new RuntimeException("This employee is not found");
     }
