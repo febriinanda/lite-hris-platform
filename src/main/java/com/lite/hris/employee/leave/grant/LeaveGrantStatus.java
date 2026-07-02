@@ -5,5 +5,6 @@ import lombok.Getter;
 @Getter
 public enum LeaveGrantStatus {
     EXPIRED,
-    ACTIVE
+    ACTIVE,
+    CLOSED
 }
