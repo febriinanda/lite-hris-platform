@@ -1,9 +1,12 @@
 package com.lite.hris.employee.leave.transaction;
 
+import com.lite.hris.employee.Employee;
 import com.lite.hris.employee.leave.grant.EmployeeLeaveGrant;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -18,11 +21,18 @@ public class EmployeeLeaveTransaction {
     @JoinColumn(name = "grant_id")
     private EmployeeLeaveGrant grant;
 
-    private String transactionType;
-    private String referenceType;
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
+
+    @Enumerated(EnumType.STRING)
+    private LeaveTransactionType transactionType;
+
+    @Enumerated(EnumType.STRING)
+    private LeaveReferenceType referenceType;
     private long referenceId;
     private int amount;
     private String remarks;
     private String createdBy;
-    private String createdAt;
+    private LocalDateTime createdAt;
 }
