@@ -33,9 +33,14 @@ public class EmployeeLeaveGrant {
     public EmployeeLeaveGrant(LeaveBalanceGrantRequest form) {
         this.employee = form.getEmployee();
         this.grantedDays = form.getGrantedDays();
+        this.remainingDays = form.getGrantedDays();
         this.year = form.getYear();
         this.earnedDate = form.getEarnedDate();
         this.expireDate = form.getExpireDate();
         this.status = LeaveGrantStatus.ACTIVE;
+    }
+
+    public LocalDate getFinalExpireDate() {
+        return this.expireDate.plusMonths(this.getExtensionCount() * 3L);
     }
 }

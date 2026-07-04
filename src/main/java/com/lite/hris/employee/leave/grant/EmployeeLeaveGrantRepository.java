@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface EmployeeLeaveGrantRepository extends JpaRepository<EmployeeLeaveGrant, Long> {
     List<EmployeeLeaveGrant> findByEmployeeAndYear(Employee employee, int year);
+
+    List<EmployeeLeaveGrant> findByEmployee(Employee employee);
 }
