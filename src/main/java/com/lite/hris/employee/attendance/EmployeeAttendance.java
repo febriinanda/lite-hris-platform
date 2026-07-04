@@ -37,6 +37,9 @@ public class EmployeeAttendance {
     @Enumerated(EnumType.STRING)
     private VerificationStatus verificationStatus;
 
+    @Enumerated(EnumType.STRING)
+    private AttendanceFollowUp action;
+
     @ManyToOne
     @JoinColumn(name = "verifier_id")
     private Employee verifiedBy;
@@ -76,6 +79,7 @@ public class EmployeeAttendance {
 
     public void verified(AttendanceVerificationRequest form) {
         this.verificationStatus = VerificationStatus.VERIFIED;
+        this.action = form.getAction();
         this.verifiedBy = form.getVerifiedBy();
         this.verifiedAt = LocalDateTime.now();
         this.verificationNote = form.getNote();
