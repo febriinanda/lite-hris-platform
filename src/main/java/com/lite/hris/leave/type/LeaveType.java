@@ -14,6 +14,7 @@ public class LeaveType {
     private long id;
 
     private String code;
+    private String name;
     private boolean needAttachment;
     private boolean consumeBalance;
     private int maxDays;
