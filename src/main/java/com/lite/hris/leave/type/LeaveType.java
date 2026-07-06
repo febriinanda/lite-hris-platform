@@ -1,5 +1,6 @@
 package com.lite.hris.leave.type;
 
+import com.lite.hris.leave.approval.flow.ApprovalFlow;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,4 +19,8 @@ public class LeaveType {
     private boolean needAttachment;
     private boolean consumeBalance;
     private int maxDays;
+
+    @ManyToOne
+    @JoinColumn(name = "approval_flow_id")
+    private ApprovalFlow approvalFlow;
 }
