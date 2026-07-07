@@ -20,6 +20,8 @@ public class ApprovalFlowItem {
     @Enumerated(EnumType.STRING)
     private FlowType type;
 
+    private int sequence;
+
     private String referenceType;
     private long referenceId;
 }
