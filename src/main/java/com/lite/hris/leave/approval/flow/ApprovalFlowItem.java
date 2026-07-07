@@ -17,5 +17,9 @@ public class ApprovalFlowItem {
     @JoinColumn(name = "header_id")
     private ApprovalFlow header;
 
+    @Enumerated(EnumType.STRING)
+    private FlowType type;
 
+    private String referenceType;
+    private long referenceId;
 }
