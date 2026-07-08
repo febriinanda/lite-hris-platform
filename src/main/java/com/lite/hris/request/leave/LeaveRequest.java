@@ -1,29 +1,29 @@
-package com.lite.hris.leave.approval.task;
+package com.lite.hris.request.leave;
 
 import com.lite.hris.employee.Employee;
-import com.lite.hris.leave.request.RequestType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Entity
-@Table(name = "approval_task")
+@Table(name = "leave_request")
 @Data
 @NoArgsConstructor
-public class ApprovalTask {
+public class LeaveRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    private int sequence;
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    @Enumerated(EnumType.STRING)
-    private RequestType requestType;
+    @ManyToOne
+    @JoinColumn(name = "leave_type_id")
+    private LeaveType type;
 
-    private long requestId;
-    private int status;
+    private LocalDate startDate;
+    private LocalDate endDate;
 }

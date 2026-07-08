@@ -1,4 +1,4 @@
-package com.lite.hris.leave.approval.flow;
+package com.lite.hris.approval.flow;
 
 import lombok.Getter;
 

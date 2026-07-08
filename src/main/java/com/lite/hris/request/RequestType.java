@@ -1,4 +1,4 @@
-package com.lite.hris.leave.request;
+package com.lite.hris.request;
 
 import lombok.Getter;
 

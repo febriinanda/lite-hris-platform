@@ -1,6 +1,6 @@
-package com.lite.hris.leave.type;
+package com.lite.hris.request.leave;
 
-import com.lite.hris.leave.approval.flow.ApprovalFlow;
+import com.lite.hris.approval.flow.ApprovalFlow;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

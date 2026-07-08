@@ -1,4 +1,4 @@
-package com.lite.hris.leave.approval.group;
+package com.lite.hris.approval.group;
 
 import com.lite.hris.employee.Employee;
 import jakarta.persistence.*;

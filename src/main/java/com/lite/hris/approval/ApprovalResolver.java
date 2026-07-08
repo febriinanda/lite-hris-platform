@@ -1,16 +1,16 @@
-package com.lite.hris.leave.approval;
+package com.lite.hris.approval;
 
+import com.lite.hris.approval.flow.ApprovalFlowItem;
+import com.lite.hris.approval.flow.FlowType;
+import com.lite.hris.approval.group.ApprovalGroup;
+import com.lite.hris.approval.group.ApprovalGroupItem;
+import com.lite.hris.approval.task.ApprovalTask;
 import com.lite.hris.employee.Employee;
 import com.lite.hris.employee.EmployeeRepository;
 import com.lite.hris.employee.reportingLine.EmployeeReportingLine;
 import com.lite.hris.employee.reportingLine.EmployeeReportingLineRepository;
-import com.lite.hris.leave.approval.flow.ApprovalFlowItem;
-import com.lite.hris.leave.approval.flow.FlowType;
-import com.lite.hris.leave.approval.group.ApprovalGroup;
-import com.lite.hris.leave.approval.group.ApprovalGroupItem;
-import com.lite.hris.leave.approval.group.ApprovalGroupItemRepository;
-import com.lite.hris.leave.approval.group.ApprovalGroupRepository;
-import com.lite.hris.leave.approval.task.ApprovalTask;
+import com.lite.hris.approval.group.ApprovalGroupItemRepository;
+import com.lite.hris.approval.group.ApprovalGroupRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
