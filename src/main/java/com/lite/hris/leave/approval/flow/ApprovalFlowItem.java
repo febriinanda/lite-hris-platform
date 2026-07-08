@@ -17,10 +17,10 @@ public class ApprovalFlowItem {
     @JoinColumn(name = "header_id")
     private ApprovalFlow header;
 
+    private int sequence;
+
     @Enumerated(EnumType.STRING)
     private FlowType type;
-
-    private int sequence;
 
     private String referenceType;
     private long referenceId;
