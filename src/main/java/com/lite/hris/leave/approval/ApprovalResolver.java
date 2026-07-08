@@ -2,6 +2,8 @@ package com.lite.hris.leave.approval;
 
 import com.lite.hris.employee.Employee;
 import com.lite.hris.employee.EmployeeRepository;
+import com.lite.hris.employee.reportingLine.EmployeeReportingLine;
+import com.lite.hris.employee.reportingLine.EmployeeReportingLineRepository;
 import com.lite.hris.leave.approval.flow.ApprovalFlowItem;
 import com.lite.hris.leave.approval.flow.FlowType;
 import com.lite.hris.leave.approval.group.ApprovalGroup;
@@ -22,6 +24,7 @@ public class ApprovalResolver {
     private final EmployeeRepository employeeRepository;
     private final ApprovalGroupRepository approvalGroupRepository;
     private final ApprovalGroupItemRepository approvalGroupItemRepository;
+    private final EmployeeReportingLineRepository employeeReportingLineRepository;
     public List<ApprovalTask> resolve(Employee requester, ApprovalFlowItem item){
         List<ApprovalTask> tasks = new ArrayList<>();
         if(item.getType().equals(FlowType.EXACT_EMPLOYEE)){
@@ -46,6 +49,24 @@ public class ApprovalResolver {
                     t.setSequence(1);
                     tasks.add(t);
                 }
+            }
+        }
+
+        if(item.getType().equals(FlowType.LINE_MANAGER)){
+            Employee current = requester;
+            for(int i = 0; i < item.getReferenceId(); i++){
+                EmployeeReportingLine employeeReportingLine = employeeReportingLineRepository.findByEmployee(current);
+                current = employeeReportingLine.getManager();
+
+                if(current == null)
+                    break;
+            }
+
+            if(current!=null && !current.equals(requester)){
+                ApprovalTask t = new ApprovalTask();
+                t.setEmployee(current);
+                t.setSequence(1);
+                tasks.add(t);
             }
         }
 
