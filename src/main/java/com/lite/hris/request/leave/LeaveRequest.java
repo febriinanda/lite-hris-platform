@@ -1,6 +1,7 @@
 package com.lite.hris.request.leave;
 
 import com.lite.hris.employee.Employee;
+import com.lite.hris.request.RequestStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,9 @@ public class LeaveRequest {
 
     private LocalDate startDate;
     private LocalDate endDate;
+
+    @Enumerated(EnumType.STRING)
+    private RequestStatus status;
 
     public LeaveRequest(LeaveRequestForm form) {
         this.employee = form.getRequester();
