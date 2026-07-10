@@ -2,15 +2,11 @@ package com.lite.hris.approval.resolver;
 
 import com.lite.hris.approval.flow.ApprovalFlowItem;
 import com.lite.hris.approval.flow.FlowType;
-import com.lite.hris.approval.group.ApprovalGroup;
-import com.lite.hris.approval.group.ApprovalGroupItem;
-import com.lite.hris.approval.group.ApprovalGroupItemRepository;
-import com.lite.hris.approval.group.ApprovalGroupRepository;
+import com.lite.hris.approval.group.*;
 import com.lite.hris.employee.Employee;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,16 +21,26 @@ public class ApprovalGroupResolver implements ApprovalResolver{
     }
 
     @Override
-    public List<Employee> resolve(Employee requester, ApprovalFlowItem item) {
-        List<Employee> approvals = new ArrayList<>();
+    public ApprovalResolved resolve(Employee requester, ApprovalFlowItem item) {
+        ApprovalResolved r = new ApprovalResolved();
         Optional<ApprovalGroup> byId = approvalGroupRepository.findById(item.getReferenceId());
         if(byId.isPresent()){
             ApprovalGroup group = byId.get();
+
             List<ApprovalGroupItem> byHeader = approvalGroupItemRepository.findByHeader(group);
             for (ApprovalGroupItem i : byHeader) {
-                approvals.add(i.getEmployee());
+                r.getEmployees().add(i.getEmployee());
             }
+
+            if(group.getMode().equals(ApprovalMode.ANY))
+                r.setMinimumApproval(1);
+
+            if(group.getMode().equals(ApprovalMode.MINIMUM))
+                r.setMinimumApproval(group.getMinimumApproval());
+
+            if(group.getMode().equals(ApprovalMode.ALL))
+                r.setMinimumApproval(r.getEmployees().size());
         }
-        return approvals;
+        return r;
     }
 }

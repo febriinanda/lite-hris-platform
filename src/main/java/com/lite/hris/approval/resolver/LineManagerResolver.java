@@ -8,9 +8,6 @@ import com.lite.hris.employee.reportingLine.EmployeeReportingLineRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Component
 @RequiredArgsConstructor
 public class LineManagerResolver implements ApprovalResolver{
@@ -21,8 +18,8 @@ public class LineManagerResolver implements ApprovalResolver{
     }
 
     @Override
-    public List<Employee> resolve(Employee requester, ApprovalFlowItem item) {
-        List<Employee> approvals = new ArrayList<>();
+    public ApprovalResolved resolve(Employee requester, ApprovalFlowItem item) {
+        ApprovalResolved r = new ApprovalResolved();
         Employee current = requester;
         for(int i = 0; i < item.getReferenceId(); i++){
             EmployeeReportingLine employeeReportingLine = employeeReportingLineRepository.findByEmployee(current);
@@ -33,8 +30,9 @@ public class LineManagerResolver implements ApprovalResolver{
         }
 
         if(current!=null && !current.equals(requester)){
-            approvals.add(current);
+            r.getEmployees().add(current);
+            r.setMinimumApproval(1);
         }
-        return approvals;
+        return r;
     }
 }

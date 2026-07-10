@@ -7,8 +7,6 @@ import com.lite.hris.employee.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -22,13 +20,14 @@ public class ExactEmployeeResolver implements ApprovalResolver{
     }
 
     @Override
-    public List<Employee> resolve(Employee requester, ApprovalFlowItem item) {
-        List<Employee> approvals = new ArrayList<>();
+    public ApprovalResolved resolve(Employee requester, ApprovalFlowItem item) {
+        ApprovalResolved r = new ApprovalResolved();
         Optional<Employee> byId = employeeRepository.findById(item.getReferenceId());
         if(byId.isPresent()){
             Employee employee = byId.get();
-            approvals.add(employee);
+            r.getEmployees().add(employee);
+            r.setMinimumApproval(1);
         }
-        return approvals;
+        return r;
     }
 }
