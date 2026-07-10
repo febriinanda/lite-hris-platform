@@ -26,4 +26,11 @@ public class LeaveRequest {
 
     private LocalDate startDate;
     private LocalDate endDate;
+
+    public LeaveRequest(LeaveRequestForm form) {
+        this.employee = form.getRequester();
+        this.type = form.getType();
+        this.startDate = form.getStartDate();
+        this.endDate = form.getEndDate();
+    }
 }
