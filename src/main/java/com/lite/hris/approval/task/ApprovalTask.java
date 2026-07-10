@@ -26,4 +26,5 @@ public class ApprovalTask {
 
     private long requestId;
     private int status;
+    private int minimumApprovalThisSequence;
 }
