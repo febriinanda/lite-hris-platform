@@ -4,6 +4,7 @@ import com.lite.hris.approval.flow.ApprovalFlowItem;
 import com.lite.hris.approval.flow.ApprovalFlowItemRepository;
 import com.lite.hris.approval.resolver.ApprovalResolved;
 import com.lite.hris.approval.task.ApprovalFlowResolver;
+import com.lite.hris.approval.task.ApprovalStatus;
 import com.lite.hris.approval.task.ApprovalTask;
 import com.lite.hris.approval.task.ApprovalTaskRepository;
 import com.lite.hris.employee.Employee;
@@ -48,7 +49,7 @@ public class LeaveRequestController {
                 t.setRequestType(RequestType.LEAVE_TYPE);
                 t.setRequestId(request.getId());
                 t.setEmployee(e);
-                t.setStatus(0);
+                t.setStatus(ApprovalStatus.WAITING);
                 t.setMinimumApprovalThisSequence(resolved.getMinimumApproval());
                 tasks.add(t);
             }

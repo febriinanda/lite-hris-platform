@@ -25,6 +25,9 @@ public class ApprovalTask {
     private RequestType requestType;
 
     private long requestId;
-    private int status;
+
+    @Enumerated(EnumType.STRING)
+    private ApprovalStatus status;
+
     private int minimumApprovalThisSequence;
 }
