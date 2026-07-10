@@ -83,9 +83,9 @@ public class AttendanceController {
                     t.setEmployee(a.getSchedule().getEmployee());
                     t.setAmount(-1);
                     LeaveTransactionType type = null;
-                    if(a.getStatus() == AttendanceStatus.ABSENT || a.getStatus() == AttendanceStatus.INCOMPLETE)
+                    if(a.getState() == AttendanceState.ABSENT || a.getState() == AttendanceState.INCOMPLETE)
                         type = LeaveTransactionType.ABSENCE_CONVERSION;
-                    else if(a.getStatus() == AttendanceStatus.LEAVE)
+                    else if(a.getDayType() == DayType.LEAVE)
                         type = LeaveTransactionType.LEAVE_APPROVED;
                     t.setTransactionType(type);
                     t.setCreatedBy(form.getVerifiedBy().getPerson().getName());

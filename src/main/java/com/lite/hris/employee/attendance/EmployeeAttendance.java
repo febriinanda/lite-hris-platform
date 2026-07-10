@@ -32,7 +32,10 @@ public class EmployeeAttendance {
     private LocalDateTime clockOut;
 
     @Enumerated(EnumType.STRING)
-    private AttendanceStatus status;
+    private AttendanceState state;
+
+    @Enumerated(EnumType.STRING)
+    private DayType dayType;
 
     @Enumerated(EnumType.STRING)
     private VerificationStatus verificationStatus;
@@ -59,18 +62,18 @@ public class EmployeeAttendance {
 
         this.verificationStatus = VerificationStatus.PENDING;
         if(schedule.isOff()){
-            this.status = AttendanceStatus.OFF;
+            this.dayType = DayType.OFF;
             this.verificationStatus = VerificationStatus.AUTO_VERIFIED;
         }else{
             if(this.clockIn == null && this.clockOut == null)
-                this.status = AttendanceStatus.ABSENT;
+                this.state = AttendanceState.ABSENT;
             else if(this.clockIn == null || this.clockOut == null)
-                this.status = AttendanceStatus.INCOMPLETE;
+                this.state = AttendanceState.INCOMPLETE;
             else{
                 if(this.clockIn.isAfter(schedule.getStartDate()))
-                    this.status = AttendanceStatus.LATE;
+                    this.state = AttendanceState.LATE;
                 else {
-                    this.status = AttendanceStatus.PRESENT;
+                    this.state = AttendanceState.PRESENT;
                     this.verificationStatus = VerificationStatus.AUTO_VERIFIED;
                 }
             }
