@@ -3,6 +3,8 @@ package com.lite.hris.approval;
 import com.lite.hris.approval.task.ApprovalStatus;
 import com.lite.hris.approval.task.ApprovalTask;
 import com.lite.hris.approval.task.ApprovalTaskRepository;
+import com.lite.hris.fact.leave.LeaveFact;
+import com.lite.hris.fact.leave.LeaveFactRepository;
 import com.lite.hris.request.RequestStatus;
 import com.lite.hris.request.RequestType;
 import com.lite.hris.request.leave.LeaveRequest;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -22,6 +25,7 @@ import java.util.stream.Collectors;
 public class ApprovalController {
     private final ApprovalTaskRepository approvalTaskRepository;
     private final LeaveRequestRepository leaveRequestRepository;
+    private final LeaveFactRepository leaveFactRepository;
     @PostMapping
     public void submit(@RequestBody ApprovalForm form){
         Optional<ApprovalTask> byId = approvalTaskRepository.findById(form.getApprovalTaskId());
@@ -79,6 +83,21 @@ public class ApprovalController {
                             LeaveRequest request = requestOptional.get();
                             request.setStatus(RequestStatus.APPROVED);
                             leaveRequestRepository.save(request);
+
+                            LocalDate start = request.getStartDate();
+                            List<LeaveFact> facts = new ArrayList<>();
+                            while(!start.isAfter(request.getEndDate())){
+                                LeaveFact f = new LeaveFact();
+                                f.setCode(request.getType().getCode());
+                                f.setReference(request);
+                                f.setEmployee(request.getEmployee());
+                                f.setAttendanceDate(start);
+                                f.setConsumeBalance(request.getType().isConsumeBalance());
+                                facts.add(f);
+                                start = start.plusDays(1);
+                            }
+
+                            leaveFactRepository.saveAll(facts);
                         }
                     }
                 }
