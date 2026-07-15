@@ -12,4 +12,6 @@ public interface EmployeeScheduleRepository extends JpaRepository<EmployeeSchedu
     List<EmployeeSchedule> findByEmployeeAndScheduleDateBetween(Employee employee, LocalDate s, LocalDate e);
 
     List<EmployeeSchedule> findByScheduleDate(LocalDate scheduleDate);
+
+    EmployeeSchedule findByEmployeeAndScheduleDate(Employee employee, LocalDate date);
 }
