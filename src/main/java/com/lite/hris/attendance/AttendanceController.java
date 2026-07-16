@@ -11,6 +11,7 @@ import com.lite.hris.employee.leave.transaction.LeaveTransactionType;
 import com.lite.hris.employee.schedule.EmployeeSchedule;
 import com.lite.hris.employee.schedule.EmployeeScheduleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -27,6 +28,7 @@ public class AttendanceController {
     private final AttendanceLogRepository attendanceLogRepository;
     private final EmployeeLeaveGrantRepository employeeLeaveGrantRepository;
     private final EmployeeLeaveTransactionRepository employeeLeaveTransactionRepository;
+    private final ApplicationEventPublisher publisher;
     @PostMapping("/process")
     public void process(@RequestBody AttendanceProcessRequest form){
         List<EmployeeSchedule> byScheduleDate = employeeScheduleRepository.findByScheduleDate(form.getScheduleDate());
@@ -110,5 +112,7 @@ public class AttendanceController {
     public void clock(@RequestBody AttendanceClockRequest form){
         AttendanceLog log = new AttendanceLog(form);
         attendanceLogRepository.save(log);
+
+        publisher.publishEvent(new AttendanceChangedEvent(log.getEmployee().getId(), log.getTime().toLocalDate()));
     }
 }

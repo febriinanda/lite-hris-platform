@@ -4,6 +4,7 @@ import com.lite.hris.attendance.AttendanceLog;
 import com.lite.hris.attendance.AttendanceVerificationRequest;
 import com.lite.hris.employee.Employee;
 import com.lite.hris.employee.schedule.EmployeeSchedule;
+import com.lite.hris.fact.leave.LeaveFact;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -109,5 +110,20 @@ public class EmployeeAttendance {
         logs.stream().filter(o->max1.isBefore(o.getTime()) && max2.isAfter(o.getTime()))
                 .max(Comparator.comparing(AttendanceLog::getTime))
                 .ifPresent(o->this.clockOut = o.getTime());
+    }
+
+    public void update(LeaveFact fact) {
+        if(this.verificationStatus == VerificationStatus.VERIFIED || this.verificationStatus == VerificationStatus.AUTO_VERIFIED)
+            return;
+
+        if(this.schedule.isOff())
+            return;
+
+        if(fact == null)
+            return;
+
+        this.dayType = DayType.LEAVE;
+        if(fact.isConsumeBalance())
+            this.action = AttendanceFollowUp.LEAVE_DEDUCTION;
     }
 }
