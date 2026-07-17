@@ -11,6 +11,7 @@ import com.lite.hris.employee.leave.transaction.LeaveTransactionType;
 import com.lite.hris.employee.schedule.EmployeeSchedule;
 import com.lite.hris.employee.schedule.EmployeeScheduleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -27,6 +28,7 @@ public class AttendanceController {
     private final AttendanceLogRepository attendanceLogRepository;
     private final EmployeeLeaveGrantRepository employeeLeaveGrantRepository;
     private final EmployeeLeaveTransactionRepository employeeLeaveTransactionRepository;
+    private final ApplicationEventPublisher publisher;
     @PostMapping("/process")
     public void process(@RequestBody AttendanceProcessRequest form){
         List<EmployeeSchedule> byScheduleDate = employeeScheduleRepository.findByScheduleDate(form.getScheduleDate());
@@ -83,9 +85,9 @@ public class AttendanceController {
                     t.setEmployee(a.getSchedule().getEmployee());
                     t.setAmount(-1);
                     LeaveTransactionType type = null;
-                    if(a.getStatus() == AttendanceStatus.ABSENT || a.getStatus() == AttendanceStatus.INCOMPLETE)
+                    if(a.getState() == AttendanceState.ABSENT || a.getState() == AttendanceState.INCOMPLETE)
                         type = LeaveTransactionType.ABSENCE_CONVERSION;
-                    else if(a.getStatus() == AttendanceStatus.LEAVE)
+                    else if(a.getDayType() == DayType.LEAVE)
                         type = LeaveTransactionType.LEAVE_APPROVED;
                     t.setTransactionType(type);
                     t.setCreatedBy(form.getVerifiedBy().getPerson().getName());
@@ -110,5 +112,7 @@ public class AttendanceController {
     public void clock(@RequestBody AttendanceClockRequest form){
         AttendanceLog log = new AttendanceLog(form);
         attendanceLogRepository.save(log);
+
+        publisher.publishEvent(new AttendanceChangedEvent(log.getEmployee().getId(), log.getTime().toLocalDate()));
     }
 }

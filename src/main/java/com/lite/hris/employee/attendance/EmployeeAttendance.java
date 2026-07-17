@@ -4,6 +4,7 @@ import com.lite.hris.attendance.AttendanceLog;
 import com.lite.hris.attendance.AttendanceVerificationRequest;
 import com.lite.hris.employee.Employee;
 import com.lite.hris.employee.schedule.EmployeeSchedule;
+import com.lite.hris.fact.leave.LeaveFact;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,7 +33,10 @@ public class EmployeeAttendance {
     private LocalDateTime clockOut;
 
     @Enumerated(EnumType.STRING)
-    private AttendanceStatus status;
+    private AttendanceState state;
+
+    @Enumerated(EnumType.STRING)
+    private DayType dayType;
 
     @Enumerated(EnumType.STRING)
     private VerificationStatus verificationStatus;
@@ -59,18 +63,18 @@ public class EmployeeAttendance {
 
         this.verificationStatus = VerificationStatus.PENDING;
         if(schedule.isOff()){
-            this.status = AttendanceStatus.OFF;
+            this.dayType = DayType.OFF;
             this.verificationStatus = VerificationStatus.AUTO_VERIFIED;
         }else{
             if(this.clockIn == null && this.clockOut == null)
-                this.status = AttendanceStatus.ABSENT;
+                this.state = AttendanceState.ABSENT;
             else if(this.clockIn == null || this.clockOut == null)
-                this.status = AttendanceStatus.INCOMPLETE;
+                this.state = AttendanceState.INCOMPLETE;
             else{
                 if(this.clockIn.isAfter(schedule.getStartDate()))
-                    this.status = AttendanceStatus.LATE;
+                    this.state = AttendanceState.LATE;
                 else {
-                    this.status = AttendanceStatus.PRESENT;
+                    this.state = AttendanceState.PRESENT;
                     this.verificationStatus = VerificationStatus.AUTO_VERIFIED;
                 }
             }
@@ -106,5 +110,20 @@ public class EmployeeAttendance {
         logs.stream().filter(o->max1.isBefore(o.getTime()) && max2.isAfter(o.getTime()))
                 .max(Comparator.comparing(AttendanceLog::getTime))
                 .ifPresent(o->this.clockOut = o.getTime());
+    }
+
+    public void update(LeaveFact fact) {
+        if(this.verificationStatus == VerificationStatus.VERIFIED || this.verificationStatus == VerificationStatus.AUTO_VERIFIED)
+            return;
+
+        if(this.schedule.isOff())
+            return;
+
+        if(fact == null)
+            return;
+
+        this.dayType = DayType.LEAVE;
+        if(fact.isConsumeBalance())
+            this.action = AttendanceFollowUp.LEAVE_DEDUCTION;
     }
 }
