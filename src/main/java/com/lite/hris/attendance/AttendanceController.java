@@ -25,6 +25,7 @@ public class AttendanceController {
     private final EmployeeLeaveTransactionRepository employeeLeaveTransactionRepository;
     private final ApplicationEventPublisher publisher;
     private final AttendanceProcessService attendanceProcessService;
+    private final AttendanceClockService attendanceClockService;
     @PostMapping("/process")
     public void process(@RequestBody AttendanceProcessRequest form){
         attendanceProcessService.process(form);
@@ -75,9 +76,7 @@ public class AttendanceController {
 
     @PostMapping("/clock")
     public void clock(@RequestBody AttendanceClockRequest form){
-        AttendanceLog log = new AttendanceLog(form);
-        attendanceLogRepository.save(log);
-
+        AttendanceLog log = attendanceClockService.clock(form);
         publisher.publishEvent(new AttendanceChangedEvent(log.getEmployee().getId(), log.getTime().toLocalDate()));
     }
 }
