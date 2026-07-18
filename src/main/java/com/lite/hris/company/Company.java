@@ -23,4 +23,8 @@ public class Company {
     public void update(CompanyDTO form) {
         this.name = form.getName();
     }
+
+    public void delete() {
+        this.deleted = true;
+    }
 }
