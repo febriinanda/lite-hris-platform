@@ -6,6 +6,13 @@ import com.lite.hris.employee.attendance.EmployeeAttendanceRepository;
 import com.lite.hris.employee.attendance.VerificationStatus;
 import com.lite.hris.employee.schedule.EmployeeSchedule;
 import com.lite.hris.employee.schedule.EmployeeScheduleRepository;
+import com.lite.hris.employee.attendance.*;
+import com.lite.hris.employee.leave.grant.EmployeeLeaveGrant;
+import com.lite.hris.employee.leave.grant.EmployeeLeaveGrantRepository;
+import com.lite.hris.employee.leave.transaction.EmployeeLeaveTransaction;
+import com.lite.hris.employee.leave.transaction.EmployeeLeaveTransactionRepository;
+import com.lite.hris.employee.leave.transaction.LeaveReferenceType;
+import com.lite.hris.employee.leave.transaction.LeaveTransactionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
@@ -16,52 +23,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.Comparator;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/attendance")
 @RequiredArgsConstructor
 public class AttendanceController {
-    private final EmployeeScheduleRepository employeeScheduleRepository;
     private final EmployeeAttendanceRepository employeeAttendanceRepository;
     private final AttendanceLogRepository attendanceLogRepository;
     private final AttendanceVerificationService attendanceVerificationService;
 
 
     private final ApplicationEventPublisher publisher;
+    private final AttendanceProcessService attendanceProcessService;
+    private final AttendanceClockService attendanceClockService;
     @PostMapping("/process")
     public void process(@RequestBody AttendanceProcessRequest form){
-        List<EmployeeSchedule> byScheduleDate = employeeScheduleRepository.findByScheduleDate(form.getScheduleDate());
-        Map<Long, EmployeeAttendance> attendanceMap = employeeAttendanceRepository.findByScheduleIn(byScheduleDate).stream()
-                .collect(Collectors.toMap(o -> o.getSchedule().getId(), Function.identity()));
-
-        LocalDateTime min = LocalDateTime.MAX;
-        LocalDateTime max = LocalDateTime.MIN;
-
-        for (EmployeeSchedule s : byScheduleDate) {
-            if(s.isOff())
-                continue;
-
-            min = s.getStartDate().isBefore(min)?s.getStartDate():min;
-            max = s.getEndDate().isAfter(max)?s.getEndDate():max;
-        }
-
-        Map<Employee, List<AttendanceLog>> attendanceLogsPerEmployee = attendanceLogRepository.findByTimeBetween(min.minusHours(2), max.plusHours(4))
-                .stream().collect(Collectors.groupingBy(AttendanceLog::getEmployee));
-
-        List<EmployeeAttendance> changes = new ArrayList<>();
-        for (EmployeeSchedule s : byScheduleDate) {
-            List<AttendanceLog> logs = attendanceLogsPerEmployee.getOrDefault(s.getEmployee(), new ArrayList<>());
-            EmployeeAttendance a = attendanceMap.get(s.getId());
-            if(a == null){
-                a = new EmployeeAttendance(s, VerificationStatus.PENDING);
-            }
-
-            a.updateClock(logs);
-            a.check();
-            changes.add(a);
-        }
-
-        employeeAttendanceRepository.saveAll(changes);
+        attendanceProcessService.process(form);
     }
 
     @PatchMapping("/{id}/verify")
@@ -71,9 +50,7 @@ public class AttendanceController {
 
     @PostMapping("/clock")
     public void clock(@RequestBody AttendanceClockRequest form){
-        AttendanceLog log = new AttendanceLog(form);
-        attendanceLogRepository.save(log);
-
+        AttendanceLog log = attendanceClockService.clock(form);
         publisher.publishEvent(new AttendanceChangedEvent(log.getEmployee().getId(), log.getTime().toLocalDate()));
     }
 }
