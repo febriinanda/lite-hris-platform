@@ -4,50 +4,36 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/department")
 @RequiredArgsConstructor
 public class DepartmentController {
-    private final DepartmentRepository repository;
+
+    private final DepartmentService service;
 
     @GetMapping
-    public List<Department> findAll(){
-        return repository.findAll();
+    public List<DepartmentResponse> findAll(){
+        return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public Department findById(@PathVariable long id){
-        Optional<Department> byId = repository.findById(id);
-        if(byId.isPresent())
-            return byId.get();
-        else throw new RuntimeException("Department is not found");
+    public DepartmentResponse findById(@PathVariable long id){
+        return service.findById(id);
     }
 
     @PostMapping
     public void create(@RequestBody DepartmentDTO form){
-        Department d = new Department(form);
-        repository.save(d);
+        service.create(form);
     }
 
     @PutMapping("/{id}")
     public void update(@PathVariable long id, @RequestBody DepartmentDTO form){
-        Optional<Department> byId = repository.findById(id);
-        if(byId.isPresent()){
-            Department existed = byId.get();
-            existed.update(form);
-            repository.save(existed);
-        }else throw new RuntimeException("Department is not found");
+        service.update(id, form);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable long id){
-        Optional<Department> byId = repository.findById(id);
-        if(byId.isPresent()){
-            Department existed = byId.get();
-            existed.setDeleted(true);
-            repository.save(existed);
-        }else throw new RuntimeException("Department is not found");
+        service.delete(id);
     }
 }
