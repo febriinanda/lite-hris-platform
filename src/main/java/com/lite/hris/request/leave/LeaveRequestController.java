@@ -1,67 +1,19 @@
 package com.lite.hris.request.leave;
 
-import com.lite.hris.approval.flow.ApprovalFlowItem;
-import com.lite.hris.approval.flow.ApprovalFlowItemRepository;
-import com.lite.hris.approval.resolver.ApprovalResolved;
-import com.lite.hris.approval.task.ApprovalFlowResolver;
-import com.lite.hris.approval.task.ApprovalStatus;
-import com.lite.hris.approval.task.ApprovalTask;
-import com.lite.hris.approval.task.ApprovalTaskRepository;
-import com.lite.hris.employee.Employee;
-import com.lite.hris.request.RequestType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/leave/request")
 @RequiredArgsConstructor
 public class LeaveRequestController {
-    private final LeaveTypeRepository leaveTypeRepository;
-    private final ApprovalFlowItemRepository approvalFlowItemRepository;
-    private final ApprovalFlowResolver approvalFlowResolver;
-    private final LeaveRequestRepository leaveRequestRepository;
-    private final ApprovalTaskRepository approvalTaskRepository;
+    private final LeaveRequestService service;
+
     @PostMapping
     public void submit(@RequestBody LeaveRequestForm form){
-        Optional<LeaveType> byId = leaveTypeRepository.findById(form.getType().getId());
-        if(byId.isEmpty())
-            throw new RuntimeException("This leave type is not recognize");
-
-        LeaveType leaveType = byId.get();
-        Employee requester = form.getRequester();
-        List<ApprovalFlowItem> items = approvalFlowItemRepository.findByHeader(leaveType.getApprovalFlow());
-
-        LeaveRequest request = new LeaveRequest(form);
-        int seq = 1;
-        List<ApprovalTask> tasks = new ArrayList<>();
-        for (ApprovalFlowItem item : items){
-            ApprovalResolved resolved = approvalFlowResolver.resolve(requester, item);
-            for (Employee e : resolved.getEmployees()) {
-                ApprovalTask t = new ApprovalTask();
-                t.setSequence(seq);
-                t.setRequestType(RequestType.LEAVE_TYPE);
-                t.setRequestId(request.getId());
-                t.setEmployee(e);
-                t.setStatus(ApprovalStatus.WAITING);
-                t.setMinimumApprovalThisSequence(resolved.getMinimumApproval());
-                tasks.add(t);
-            }
-
-            if(!resolved.getEmployees().isEmpty())
-                seq++;
-        }
-
-        if(tasks.isEmpty())
-            throw new RuntimeException("Request is invalid, 0 Approval for this request");
-
-        leaveRequestRepository.save(request);
-        approvalTaskRepository.saveAll(tasks);
+        service.submit(form);
     }
 }
