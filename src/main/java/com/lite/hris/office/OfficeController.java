@@ -4,49 +4,35 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/office")
 @RequiredArgsConstructor
 public class OfficeController {
-    private final OfficeRepository repository;
+    private final OfficeService service;
 
     @GetMapping
     public List<Office> findAll(){
-        return repository.findAll();
+        return service.findAll();
     }
 
     @GetMapping("/{id}")
     public Office findById(@PathVariable long id){
-        Optional<Office> byId = repository.findById(id);
-        if(byId.isPresent()) return byId.get();
-        else throw new RuntimeException("Office is not found");
+        return service.findById(id);
     }
 
     @PostMapping
     public void create(@RequestBody OfficeDTO form){
-        Office o = new Office(form);
-        repository.save(o);
+        service.create(form);
     }
 
     @PutMapping("/{id}")
     public void update(@PathVariable long id, @RequestBody OfficeDTO form){
-        Optional<Office> byId = repository.findById(id);
-        if(byId.isPresent()){
-            Office existed = byId.get();
-            existed.update(form);
-            repository.save(existed);
-        }else throw new RuntimeException("Office is not found");
+        service.update(id, form);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable long id){
-        Optional<Office> byId = repository.findById(id);
-        if(byId.isPresent()){
-            Office existed = byId.get();
-            existed.setDeleted(true);
-            repository.save(existed);
-        }else throw new RuntimeException("Office is not found");
+        service.delete(id);
     }
 }

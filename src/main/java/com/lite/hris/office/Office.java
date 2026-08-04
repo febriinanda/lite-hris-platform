@@ -39,4 +39,8 @@ public class Office {
         this.type = form.getType();
         this.company = form.getCompany();
     }
+
+    public void delete() {
+        this.deleted = true;
+    }
 }
