@@ -31,4 +31,8 @@ public class JobPosition {
         this.title = form.getTitle();
         this.department = form.getDepartment();
     }
+
+    public void delete() {
+        this.deleted = true;
+    }
 }
