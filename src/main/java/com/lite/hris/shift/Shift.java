@@ -40,4 +40,8 @@ public class Shift {
         this.breakDuration = form.getBreakDuration();
         this.crossDay = form.isCrossDay();
     }
+
+    public void deleted() {
+        this.deleted = true;
+    }
 }

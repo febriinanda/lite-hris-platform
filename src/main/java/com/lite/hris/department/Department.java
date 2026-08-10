@@ -23,4 +23,8 @@ public class Department {
     public void update(DepartmentDTO form) {
         this.name = form.getName();
     }
+
+    public void delete() {
+        this.deleted = false;
+    }
 }

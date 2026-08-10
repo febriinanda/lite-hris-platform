@@ -38,4 +38,8 @@ public class Person implements HasFileUpload {
         this.gender = form.getGender();
         this.birthDate = form.getBirthDate();
     }
+
+    public void delete() {
+        this.deleted = true;
+    }
 }

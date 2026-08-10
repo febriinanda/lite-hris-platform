@@ -69,22 +69,22 @@ Out of Scope:
 - Position 🟢
 - Reporting structure
 
-### Leave Management ⚪
+### Leave Management 🟡
 - Annual leave
 - Sick leave
 - Special leave
 - Leave balance tracking
-- Leave approval workflow
+- Leave approval workflow 🟢
 
 ### Employee Self Service (ESS) 🟡
 - View profile 🟢
 - Update personal information 🟢
-- Submit leave request
+- Submit leave request 🟢
 - View attendance history
 
-### Approval Workflow ⚪
-- Multi level approval
-- Approval history
+### Approval Workflow 🟡
+- Multi level approval 🟢
+- Approval history 
 - Approval notifications
 
 ### Dashboard ⚪
