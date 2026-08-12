@@ -28,4 +28,12 @@ public class LeaveFact {
     @ManyToOne
     @JoinColumn(name = "leave_request_id")
     private LeaveRequest reference;
+
+    public LeaveFact(LeaveRequest request, LocalDate start) {
+        this.code = request.getType().getCode();
+        this.reference = request;
+        this.employee = request.getEmployee();
+        this.attendanceDate = start;
+        this.consumeBalance = request.getType().isConsumeBalance();
+    }
 }
