@@ -20,4 +20,12 @@ public class EmployeeAttendanceController {
         return service.getAttendances(id, from, to);
     }
 
+    @GetMapping("/{id}/attendance")
+    public DailyAttendance getAttendance(
+            @PathVariable long id,
+            @RequestParam LocalDate date
+    ){
+        return service.getAttendance(id, date);
+    }
+
 }

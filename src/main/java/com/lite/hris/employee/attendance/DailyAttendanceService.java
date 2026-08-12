@@ -19,13 +19,23 @@ public class DailyAttendanceService {
         List<EmployeeAttendance> byScheduleIn = attendanceRepository.findByScheduleIn(schedules);
         List<DailyAttendance> dailies = new ArrayList<>();
         for (EmployeeAttendance attendance : byScheduleIn) {
-            if(attendance.getDayType() == DayType.WORKDAY){
-                dailies.add(new WorkDayAttendance(attendance));
-            }else{
-                dailies.add(new OffAttendance(attendance));
-            }
+            dailies.add(getDaily(attendance));
         }
 
         return dailies;
+    }
+
+    public DailyAttendance getAttendance(long id, LocalDate date){
+        List<DailyAttendance> attendances = getAttendances(id, date, date);
+        if(attendances.isEmpty())
+            return null;
+        return attendances.getFirst();
+    }
+
+    private DailyAttendance getDaily(EmployeeAttendance attendance){
+        if(attendance.getDayType() == DayType.WORKDAY){
+            return new WorkDayAttendance(attendance);
+        }
+        return new OffAttendance(attendance);
     }
 }
