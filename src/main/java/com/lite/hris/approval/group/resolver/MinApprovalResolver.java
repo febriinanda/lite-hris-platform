@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class MinimumApprovalResolver implements ApprovalCountResolver{
+public class MinApprovalResolver implements ApprovalCountResolver{
     @Override
     public ApprovalMode getMode() {
         return ApprovalMode.MINIMUM;
