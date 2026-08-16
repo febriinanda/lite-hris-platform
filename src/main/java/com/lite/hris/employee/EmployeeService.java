@@ -22,5 +22,7 @@ public class EmployeeService {
         }else throw new RuntimeException("Employee is not found");
     }
 
-
+    public void save(Employee e){
+        repository.save(e);
+    }
 }
