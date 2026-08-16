@@ -1,7 +1,7 @@
 package com.lite.hris.attendance;
 
 import com.lite.hris.employee.Employee;
-import com.lite.hris.employee.EmployeeRepository;
+import com.lite.hris.employee.EmployeeService;
 import com.lite.hris.employee.attendance.EmployeeAttendance;
 import com.lite.hris.employee.attendance.EmployeeAttendanceRepository;
 import com.lite.hris.employee.attendance.VerificationStatus;
@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +23,8 @@ public class AttendanceCalculatorService {
     private final EmployeeAttendanceRepository employeeAttendanceRepository;
     private final AttendanceLogRepository attendanceLogRepository;
     private final EmployeeScheduleRepository employeeScheduleRepository;
-    private final EmployeeRepository employeeRepository;
     private final LeaveFactService leaveFactService;
+    private final EmployeeService employeeService;
 
     @EventListener
     public void onAttendanceChanged(AttendanceChangedEvent event){
@@ -34,7 +33,7 @@ public class AttendanceCalculatorService {
 
     @Transactional
     public void calculate(long employeeId, LocalDate date){
-        Employee employee = loadEmployee(employeeId);;
+        Employee employee = employeeService.findById(employeeId);
         EmployeeAttendance a = loadEmployeeAttendance(employee, date);
         List<AttendanceLog> logs = loadAttendanceLog(employee, a);
         applyClock(a, logs);
@@ -64,13 +63,5 @@ public class AttendanceCalculatorService {
         }else{
             return existed.get(0);
         }
-    }
-
-    private Employee loadEmployee(long employeeId) {
-        Optional<Employee> byId = employeeRepository.findById(employeeId);
-        if(byId.isEmpty())
-            throw new RuntimeException("This employee is not found");
-
-        return byId.get();
     }
 }
