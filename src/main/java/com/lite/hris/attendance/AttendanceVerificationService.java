@@ -28,37 +28,50 @@ public class AttendanceVerificationService {
 
             if(a.getVerificationStatus() == VerificationStatus.VERIFIED || a.getVerificationStatus() == VerificationStatus.AUTO_VERIFIED){
                 if(a.getAction() == AttendanceFollowUp.LEAVE_DEDUCTION){
-                    Optional<EmployeeLeaveGrant> min = employeeLeaveGrantRepository.findByEmployee(a.getSchedule().getEmployee()).stream().filter(
-                            o -> o.getEarnedDate().isBefore(a.getAttendanceDate()) && o.getFinalExpireDate().isAfter(a.getAttendanceDate())
-                    ).min(Comparator.comparing(EmployeeLeaveGrant::getFinalExpireDate));
-
-                    EmployeeLeaveTransaction t = new EmployeeLeaveTransaction();
-                    t.setCreatedAt(LocalDateTime.now());
-                    t.setReferenceType(LeaveReferenceType.ATTENDANCE);
-                    t.setReferenceId(a.getId());
-                    t.setEmployee(a.getSchedule().getEmployee());
-                    t.setAmount(-1);
-                    LeaveTransactionType type = null;
-                    if(a.getState() == AttendanceState.ABSENT || a.getState() == AttendanceState.INCOMPLETE)
-                        type = LeaveTransactionType.ABSENCE_CONVERSION;
-                    else if(a.getDayType() == DayType.LEAVE)
-                        type = LeaveTransactionType.LEAVE_APPROVED;
-                    t.setTransactionType(type);
-                    t.setCreatedBy(form.getVerifiedBy().getPerson().getName());
-
-                    if(min.isPresent()){
-                        EmployeeLeaveGrant grant = min.get();
-                        t.setGrant(grant);
-                        grant.setRemainingDays(grant.getRemainingDays() + t.getAmount());
-                        employeeLeaveGrantRepository.save(grant);
-                    }
-
-                    employeeLeaveTransactionRepository.save(t);
+                    leaveDeduction(a, form);
                 }
             }
             employeeAttendanceRepository.save(a);
 
 
         }else throw new RuntimeException("This attendance is not exist");
+    }
+
+    private void leaveDeduction(EmployeeAttendance a, AttendanceVerificationRequest form) {
+        Optional<EmployeeLeaveGrant> current = currentLeaveGrant(a);
+
+        EmployeeLeaveTransaction t = new EmployeeLeaveTransaction();
+        t.setCreatedAt(LocalDateTime.now());
+        t.setReferenceType(LeaveReferenceType.ATTENDANCE);
+        t.setReferenceId(a.getId());
+        t.setEmployee(a.getSchedule().getEmployee());
+        t.setAmount(-1);
+        t.setTransactionType(defineTransactionType(a));
+        t.setCreatedBy(form.getVerifiedBy().getPerson().getName());
+
+        if(current.isPresent()){
+            EmployeeLeaveGrant grant = current.get();
+            t.setGrant(grant);
+            grant.setRemainingDays(grant.getRemainingDays() + t.getAmount());
+            employeeLeaveGrantRepository.save(grant);
+        }
+
+        employeeLeaveTransactionRepository.save(t);
+    }
+
+    private LeaveTransactionType defineTransactionType(EmployeeAttendance a){
+        LeaveTransactionType type = null;
+        if(a.getState() == AttendanceState.ABSENT || a.getState() == AttendanceState.INCOMPLETE)
+            type = LeaveTransactionType.ABSENCE_CONVERSION;
+        else if(a.getDayType() == DayType.LEAVE)
+            type = LeaveTransactionType.LEAVE_APPROVED;
+
+        return type;
+    }
+
+    private Optional<EmployeeLeaveGrant> currentLeaveGrant(EmployeeAttendance a){
+        return employeeLeaveGrantRepository.findByEmployee(a.getSchedule().getEmployee()).stream().filter(
+                o -> o.getEarnedDate().isBefore(a.getAttendanceDate()) && o.getFinalExpireDate().isAfter(a.getAttendanceDate())
+        ).min(Comparator.comparing(EmployeeLeaveGrant::getFinalExpireDate));
     }
 }
