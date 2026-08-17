@@ -53,7 +53,7 @@ public class AttendanceCalculatorService {
     }
 
     private EmployeeAttendance loadEmployeeAttendance(Employee employee, LocalDate date) {
-        List<EmployeeAttendance> existed = employeeAttendanceRepository.findEmployeeAndAttendanceDate(employee, date);
+        List<EmployeeAttendance> existed = employeeAttendanceRepository.findByScheduleEmployeeAndAttendanceDate(employee, date);
         if(existed.size()>1)
             throw new RuntimeException("Employee attendance is more than 1");
 

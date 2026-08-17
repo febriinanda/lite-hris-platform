@@ -12,5 +12,5 @@ import java.util.List;
 public interface EmployeeAttendanceRepository extends JpaRepository<EmployeeAttendance, Long> {
     List<EmployeeAttendance> findByScheduleIn(List<EmployeeSchedule> schedules);
 
-    List<EmployeeAttendance> findEmployeeAndAttendanceDate(Employee employee, LocalDate date);
+    List<EmployeeAttendance> findByScheduleEmployeeAndAttendanceDate(Employee employee, LocalDate date);
 }
