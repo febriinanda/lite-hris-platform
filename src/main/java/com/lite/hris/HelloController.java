@@ -22,7 +22,8 @@ public class HelloController {
     public Map<String, Object> me(@AuthenticationPrincipal Jwt jwt){
         return Map.of(
                 "username",jwt.getClaimAsString("preferred_username"),
-                "email",jwt.getClaimAsString("email")
+                "email",jwt.getClaimAsString("email"),
+                "name",jwt.getClaimAsString("name")
         );
     }
 }
