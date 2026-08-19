@@ -1,9 +1,11 @@
 package com.lite.hris.person;
 
 import com.lite.hris.FileUpload.HasFileUpload;
+import com.lite.hris.config.Audit;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,6 +14,7 @@ import java.time.LocalDateTime;
 @Table(name = "person")
 @Data
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Person implements HasFileUpload {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +29,9 @@ public class Person implements HasFileUpload {
     private String filePath;
     private long fileSize;
     private LocalDateTime uploadDate;
+
+    @Embedded
+    private Audit audit = new Audit();
 
     public Person(PersonDTO form) {
         this.name = form.getName();
