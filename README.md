@@ -47,10 +47,10 @@ Out of Scope:
 - Employee document storage
 - Profile photo storage
 
-### Security ⚪
+### Security 🟡
 - Role Based Access Control (RBAC)
-- OAuth2 Authorization Server
-- JWT Authentication
+- OAuth2 Authorization Server 🟢
+- JWT Authentication 🟢
 
 ## Features
 ### Employee Management 🟢
