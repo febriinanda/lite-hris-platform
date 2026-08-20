@@ -1,11 +1,13 @@
 package com.lite.hris.document.certification;
 
 import com.lite.hris.FileUpload.HasFileUpload;
+import com.lite.hris.config.Audit;
 import com.lite.hris.document.DocumentCategory;
 import com.lite.hris.person.Person;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "certification_document")
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class CertificationDocument implements HasFileUpload {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +38,9 @@ public class CertificationDocument implements HasFileUpload {
     private String filePath;
     private long fileSize;
     private LocalDateTime uploadDate;
+
+    @Embedded
+    private Audit audit = new Audit();
 
     public CertificationDocument(CertificationDocumentDTO form) {
         this.person = form.getPerson();

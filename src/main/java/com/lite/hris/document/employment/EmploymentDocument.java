@@ -1,11 +1,13 @@
 package com.lite.hris.document.employment;
 
 import com.lite.hris.FileUpload.HasFileUpload;
+import com.lite.hris.config.Audit;
 import com.lite.hris.document.DocumentCategory;
 import com.lite.hris.employee.Employee;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 @Table(name = "employment_document")
 @Data
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class EmploymentDocument implements HasFileUpload {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +37,9 @@ public class EmploymentDocument implements HasFileUpload {
     private String filePath;
     private long fileSize;
     private LocalDateTime uploadDate;
+
+    @Embedded
+    private Audit audit = new Audit();
 
     public EmploymentDocument(EmploymentDocumentDTO form) {
         this.employee = form.getEmployee();

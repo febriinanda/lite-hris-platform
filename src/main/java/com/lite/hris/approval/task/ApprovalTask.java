@@ -1,15 +1,18 @@
 package com.lite.hris.approval.task;
 
+import com.lite.hris.config.Audit;
 import com.lite.hris.employee.Employee;
 import com.lite.hris.request.RequestType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "approval_task")
 @Data
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class ApprovalTask {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,4 +33,7 @@ public class ApprovalTask {
     private ApprovalStatus status;
 
     private int minimumApprovalThisSequence;
+
+    @Embedded
+    private Audit audit = new Audit();
 }
