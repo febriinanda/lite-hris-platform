@@ -1,10 +1,12 @@
 package com.lite.hris.request.leave;
 
+import com.lite.hris.config.Audit;
 import com.lite.hris.employee.Employee;
 import com.lite.hris.request.RequestStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 
@@ -12,6 +14,7 @@ import java.time.LocalDate;
 @Table(name = "leave_request")
 @Data
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class LeaveRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +33,9 @@ public class LeaveRequest {
 
     @Enumerated(EnumType.STRING)
     private RequestStatus status;
+
+    @Embedded
+    private Audit audit = new Audit();
 
     public LeaveRequest(LeaveRequestForm form) {
         this.employee = form.getRequester();
