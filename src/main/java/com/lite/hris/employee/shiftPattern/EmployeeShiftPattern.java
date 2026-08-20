@@ -1,11 +1,13 @@
 package com.lite.hris.employee.shiftPattern;
 
+import com.lite.hris.config.Audit;
 import com.lite.hris.employee.Employee;
 import com.lite.hris.employee.schedule.EmployeeSchedule;
 import com.lite.hris.shift.pattern.ShiftPattern;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import java.util.List;
 @Table(name = "employee_shift_pattern")
 @Entity
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class EmployeeShiftPattern {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +34,9 @@ public class EmployeeShiftPattern {
     private LocalDate effectiveDate;
     private int startSequence;
     private LocalDate endDate;
+
+    @Embedded
+    private Audit audit = new Audit();
 
     public EmployeeShiftPattern(EmployeeShiftPatternDTO form, Employee e) {
         this.employee = e;

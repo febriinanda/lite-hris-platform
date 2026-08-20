@@ -2,12 +2,14 @@ package com.lite.hris.employee.attendance;
 
 import com.lite.hris.attendance.AttendanceLog;
 import com.lite.hris.attendance.AttendanceVerificationRequest;
+import com.lite.hris.config.Audit;
 import com.lite.hris.employee.Employee;
 import com.lite.hris.employee.schedule.EmployeeSchedule;
 import com.lite.hris.fact.leave.LeaveFact;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,6 +20,7 @@ import java.util.List;
 @Entity
 @Table(name = "employee_attendance")
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class EmployeeAttendance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +53,9 @@ public class EmployeeAttendance {
 
     private LocalDateTime verifiedAt;
     private String verificationNote;
+
+    @Embedded
+    private Audit audit = new Audit();
 
     public EmployeeAttendance(EmployeeSchedule s, VerificationStatus verificationStatus) {
         this.schedule = s;
