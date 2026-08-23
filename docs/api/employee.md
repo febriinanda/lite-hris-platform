@@ -25,8 +25,8 @@ Register a new employee.
 Get employee profile by ID.
 #### Path Parameter
 | Parameter | Type | Required | Description |
-|---|---|---|---|
-| id | long | Yes | Employee ID |
+|-----------|------|----------|-------------|
+| id        | long | Yes      | Employee ID |
 #### Response
 ```json
 {
@@ -48,8 +48,8 @@ Get employee profile by ID.
 Assign a registered number to an employee.
 #### Path Parameter
 | Parameter | Type | Required | Description |
-|---|---|---|---|
-| id | long | Yes | Employee ID |
+|-----------|------|----------|-------------|
+| id        | long | Yes      | Employee ID |
 #### Request
 ```json
 {
@@ -61,8 +61,8 @@ Assign a registered number to an employee.
 Assign a position to an employee.
 #### Path Parameter
 | Parameter | Type | Required | Description |
-|---|---|---|---|
-| id | long | Yes | Employee ID |
+|-----------|------|----------|-------------|
+| id        | long | Yes      | Employee ID |
 #### Request
 ```json
 {
@@ -78,8 +78,8 @@ Assign a position to an employee.
 Assign a work location to an employee.
 #### Path Parameter
 | Parameter | Type | Required | Description |
-|---|---|---|---|
-| id | long | Yes | Employee ID |
+|-----------|------|----------|-------------|
+| id        | long | Yes      | Employee ID |
 #### Request
 ```json
 {
