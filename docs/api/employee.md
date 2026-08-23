@@ -20,7 +20,9 @@ Register a new employee.
 `GET /employee/{id}/profile`
 Get employee profile by ID.
 #### Path Parameter
-`id` (long) Employee ID
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| id | long | Yes | Employee ID |
 #### Response
 ```json
 {
@@ -41,7 +43,9 @@ Get employee profile by ID.
 `PATCH /employee/{id}/registration/number`
 Assign a registered number to an employee.
 #### Path Parameter
-`id` (long) Employee ID
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| id | long | Yes | Employee ID |
 #### Request
 ```json
 {
@@ -52,7 +56,9 @@ Assign a registered number to an employee.
 `POST /employee/{id}/assign`
 Assign a position to an employee.
 #### Path Parameter
-`id` (long) Employee ID
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| id | long | Yes | Employee ID |
 #### Request
 ```json
 {
@@ -67,7 +73,9 @@ Assign a position to an employee.
 `POST /employee/{id}/work/site`
 Assign a work location to an employee.
 #### Path Parameter
-`id` (long) Employee ID
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| id | long | Yes | Employee ID |
 #### Request
 ```json
 {
