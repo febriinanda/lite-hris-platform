@@ -29,6 +29,7 @@ public class PersonService {
         repository.save(p);
     }
 
+    @Transactional
     public void update(long id, PersonDTO form) {
         Person p = findById(id);
         p.update(form);
@@ -36,20 +37,32 @@ public class PersonService {
 
     @Transactional
     public void rename(long id, PersonDTO form) {
+        if(form.getName().isEmpty())
+            throw new RuntimeException("Name is empty");
+
         Person p = findById(id);
         p.setName(form.getName());
     }
 
+    @Transactional
     public void birthDayUpdate(long id, PersonDTO form) {
+        if(form.getBirthDate() == null)
+            throw new RuntimeException("Birth date is empty");
+
         Person p = findById(id);
         p.setBirthDate(form.getBirthDate());
     }
 
+    @Transactional
     public void genderSwitch(long id, PersonDTO form) {
+        if(form.getGender().isEmpty())
+            throw new RuntimeException("Gender is empty");
+
         Person p = findById(id);
         p.setGender(form.getGender());
     }
 
+    @Transactional
     public void delete(long id) {
         Person p = findById(id);
         p.delete();
