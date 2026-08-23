@@ -1,4 +1,8 @@
 # Employee API
+**Authentication:** JWT required for all endpoints.
+```http
+Authorization: Bearer <access_token>
+```
 
 ## Employee Management
 ### Register Employee
