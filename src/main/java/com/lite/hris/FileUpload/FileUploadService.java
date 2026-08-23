@@ -1,6 +1,7 @@
 package com.lite.hris.FileUpload;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,6 +37,7 @@ public class FileUploadService {
         }
     }
 
+    @Transactional
     public void photoProfile(HasFileUpload p, MultipartFile file) throws IOException {
         handle(p, file, "storage/photo-profile");
     }
