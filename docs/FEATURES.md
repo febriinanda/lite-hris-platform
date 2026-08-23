@@ -1,4 +1,14 @@
 # Feature Catalog
+## Person
+### Person Management
+Status: 🟡 Work In Progress
+- [ ] create person
+- [ ] view person
+- [ ] rename person
+- [ ] change birthday
+- [ ] update gender
+- [ ] update photo profile
+- [ ] disable person
 
 ## Employee
 
