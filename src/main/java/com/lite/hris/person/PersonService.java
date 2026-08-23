@@ -2,6 +2,7 @@ package com.lite.hris.person;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +34,7 @@ public class PersonService {
         p.update(form);
     }
 
+    @Transactional
     public void rename(long id, PersonDTO form) {
         Person p = findById(id);
         p.setName(form.getName());
