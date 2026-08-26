@@ -15,10 +15,10 @@ Status: 🟢 Done
 ### Employee Management
 Status: 🟡 Work In Progress
 
-- [ ] register employee 
-- [ ] view employee profile
+- [x] register employee 
+- [x] view employee profile
 
 #### Employee Assignment
-- [ ] assign registered number
+- [x] assign registered number
 - [ ] assign position
 - [ ] assign work location
