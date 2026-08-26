@@ -9,7 +9,6 @@ import com.lite.hris.employee.leave.transaction.LeaveTransactionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -31,7 +30,6 @@ public class EmployeeLeaveGrantService {
         t.setAmount(form.getGrantedDays());
         t.setTransactionType(LeaveTransactionType.ENTITLEMENT);
         t.setReferenceType(LeaveReferenceType.SYSTEM);
-        t.setCreatedAt(LocalDateTime.now());
         employeeLeaveGrantRepository.save(grant);
         employeeLeaveTransactionRepository.save(t);
     }

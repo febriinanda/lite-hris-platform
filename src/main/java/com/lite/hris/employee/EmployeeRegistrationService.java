@@ -4,6 +4,7 @@ import com.lite.hris.employee.status.EmployeeStatus;
 import com.lite.hris.employee.status.EmployeeStatusRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -12,6 +13,7 @@ public class EmployeeRegistrationService {
     private final EmployeeStatusRepository statusRepository;
     private final RegistrationNumberValidationService registrationNumberValidationService;
 
+    @Transactional
     public void registerNumber(long id, NumberRegistrationDTO form){
         boolean valid = registrationNumberValidationService.isValid(form.getNumber());
         if(!valid)

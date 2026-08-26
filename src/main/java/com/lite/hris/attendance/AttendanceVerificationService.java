@@ -10,7 +10,6 @@ import com.lite.hris.employee.leave.transaction.LeaveTransactionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Optional;
 
@@ -28,7 +27,7 @@ public class AttendanceVerificationService {
 
             if(a.getVerificationStatus() == VerificationStatus.VERIFIED || a.getVerificationStatus() == VerificationStatus.AUTO_VERIFIED){
                 if(a.getAction() == AttendanceFollowUp.LEAVE_DEDUCTION){
-                    leaveDeduction(a, form);
+                    leaveDeduction(a);
                 }
             }
             employeeAttendanceRepository.save(a);
@@ -37,17 +36,15 @@ public class AttendanceVerificationService {
         }else throw new RuntimeException("This attendance is not exist");
     }
 
-    private void leaveDeduction(EmployeeAttendance a, AttendanceVerificationRequest form) {
+    private void leaveDeduction(EmployeeAttendance a) {
         Optional<EmployeeLeaveGrant> current = currentLeaveGrant(a);
 
         EmployeeLeaveTransaction t = new EmployeeLeaveTransaction();
-        t.setCreatedAt(LocalDateTime.now());
         t.setReferenceType(LeaveReferenceType.ATTENDANCE);
         t.setReferenceId(a.getId());
         t.setEmployee(a.getSchedule().getEmployee());
         t.setAmount(-1);
         t.setTransactionType(defineTransactionType(a));
-        t.setCreatedBy(form.getVerifiedBy().getPerson().getName());
 
         if(current.isPresent()){
             EmployeeLeaveGrant grant = current.get();

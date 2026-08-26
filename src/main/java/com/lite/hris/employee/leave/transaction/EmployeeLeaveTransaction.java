@@ -8,8 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Data
 @Table(name = "employee_leave_transaction")
@@ -36,8 +34,6 @@ public class EmployeeLeaveTransaction {
     private long referenceId;
     private int amount;
     private String remarks;
-    private String createdBy;
-    private LocalDateTime createdAt;
 
     @Embedded
     private Audit audit = new Audit();
