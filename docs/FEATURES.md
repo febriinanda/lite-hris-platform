@@ -13,7 +13,7 @@ Status: 🟢 Done
 ## Employee
 
 ### Employee Management
-Status: 🟡 Work In Progress
+Status: 🟢 Done
 
 - [x] register employee 
 - [x] view employee profile
