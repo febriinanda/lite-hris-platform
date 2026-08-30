@@ -13,12 +13,12 @@ Status: 🟢 Done
 ## Employee
 
 ### Employee Management
-Status: 🟡 Work In Progress
+Status: 🟢 Done
 
 - [x] register employee 
 - [x] view employee profile
 
 #### Employee Assignment
 - [x] assign registered number
-- [ ] assign position
-- [ ] assign work location
+- [x] assign position
+- [x] assign work location
