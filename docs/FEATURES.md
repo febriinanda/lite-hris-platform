@@ -20,5 +20,5 @@ Status: 🟡 Work In Progress
 
 #### Employee Assignment
 - [x] assign registered number
-- [ ] assign position
-- [ ] assign work location
+- [x] assign position
+- [x] assign work location
