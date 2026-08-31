@@ -1,6 +1,6 @@
 package com.lite.hris.person;
 
-import com.lite.hris.FileUpload.HasFileUpload;
+import com.lite.hris.fileUpload.HasFileUpload;
 import com.lite.hris.config.Audit;
 import jakarta.persistence.*;
 import lombok.Data;
