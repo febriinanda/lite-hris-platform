@@ -10,6 +10,13 @@ Status: 🟢 Done
 - [x] update photo profile
 - [x] disable person
 
+## Company
+### Company Management
+- [ ] create a company
+- [ ] view company
+- [ ] update company info
+- [ ] disable a company
+
 ## Employee
 
 ### Employee Management
