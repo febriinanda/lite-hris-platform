@@ -1,6 +1,6 @@
 package com.lite.hris.document.personal;
 
-import com.lite.hris.FileUpload.FileUploadService;
+import com.lite.hris.fileUpload.FileUploadService;
 import com.lite.hris.document.DocumentCategory;
 import com.lite.hris.exception.DocumentCategoryException;
 import lombok.RequiredArgsConstructor;

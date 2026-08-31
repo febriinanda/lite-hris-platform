@@ -1,6 +1,6 @@
 package com.lite.hris.document.employment;
 
-import com.lite.hris.FileUpload.HasFileUpload;
+import com.lite.hris.fileUpload.HasFileUpload;
 import com.lite.hris.config.Audit;
 import com.lite.hris.document.DocumentCategory;
 import com.lite.hris.employee.Employee;
