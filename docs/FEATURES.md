@@ -12,10 +12,10 @@ Status: 🟢 Done
 
 ## Company
 ### Company Management
-- [ ] create a company
-- [ ] view company
-- [ ] update company info
-- [ ] disable a company
+- [x] create a company
+- [x] view company
+- [x] update company info
+- [x] disable a company
 
 ## Employee
 
