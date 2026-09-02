@@ -12,13 +12,21 @@ Status: 🟢 Done
 
 ## Company
 ### Company Management
+Status: 🟢 Done
 - [x] create a company
 - [x] view company
 - [x] update company info
 - [x] disable a company
 
-## Employee
+## Department
+### Department Management
+Status: 🟡 Work In Progress 
+- [ ] create a department
+- [ ] view department
+- [ ] update department info
+- [ ] disable a department
 
+## Employee
 ### Employee Management
 Status: 🟢 Done
 
