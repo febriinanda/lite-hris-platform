@@ -18,6 +18,14 @@ Status: 🟢 Done
 - [x] update company info
 - [x] disable a company
 
+## Job Position
+### Job Position Management
+Status: 🟡 Work In Progress 
+- [ ] create a job position
+- [ ] view a job position
+- [ ] update job position info
+- [ ] disable a job position
+
 ## Department
 ### Department Management
 Status: 🟡 Work In Progress 
