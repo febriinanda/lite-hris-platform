@@ -42,6 +42,12 @@ Status: 🟡 Work In Progress
 - [ ] update office info
 - [ ] disable a office
 
+## Shift Pattern
+### Shift Pattern Management
+Status: 🟡 Work In Progress
+- [ ] create a shift pattern
+- [ ] view shift pattern
+
 ## Employee
 ### Employee Management
 Status: 🟢 Done
