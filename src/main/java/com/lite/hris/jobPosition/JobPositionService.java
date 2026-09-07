@@ -2,6 +2,7 @@ package com.lite.hris.jobPosition;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,11 +28,13 @@ public class JobPositionService {
         repository.save(position);
     }
 
+    @Transactional
     public void update(long id, JobPositionDTO form) {
         JobPosition jp = findById(id);
         jp.update(form);
     }
 
+    @Transactional
     public void delete(long id) {
         JobPosition jp = findById(id);
         jp.delete();

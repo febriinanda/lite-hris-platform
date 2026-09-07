@@ -31,6 +31,6 @@ public class Department {
     }
 
     public void delete() {
-        this.deleted = false;
+        this.deleted = true;
     }
 }
