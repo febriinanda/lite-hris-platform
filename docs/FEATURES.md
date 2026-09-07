@@ -21,10 +21,10 @@ Status: 🟢 Done
 ## Department
 ### Department Management
 Status: 🟡 Work In Progress 
-- [ ] create a department
-- [ ] view department
-- [ ] update department info
-- [ ] disable a department
+- [x] create a department
+- [x] view department
+- [x] update department info
+- [x] disable a department
 
 ## Job Position
 ### Job Position Management
