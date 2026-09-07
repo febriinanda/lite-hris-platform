@@ -20,7 +20,7 @@ Status: 🟢 Done
 
 ## Department
 ### Department Management
-Status: 🟡 Work In Progress 
+Status: 🟢 Done
 - [x] create a department
 - [x] view department
 - [x] update department info
@@ -28,11 +28,11 @@ Status: 🟡 Work In Progress
 
 ## Job Position
 ### Job Position Management
-Status: 🟡 Work In Progress
-- [ ] create a job position
-- [ ] view a job position
-- [ ] update job position info
-- [ ] disable a job position
+Status: 🟢 Done
+- [x] create a job position
+- [x] view a job position
+- [x] update job position info
+- [x] disable a job position
 
 ## Office
 ### Office Management
