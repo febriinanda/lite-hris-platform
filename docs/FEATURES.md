@@ -1,0 +1,61 @@
+# Feature Catalog
+## Person
+### Person Management
+Status: 🟢 Done
+- [x] create person
+- [x] view person
+- [x] rename person
+- [x] change birthday
+- [x] update gender
+- [x] update photo profile
+- [x] disable person
+
+## Company
+### Company Management
+Status: 🟢 Done
+- [x] create a company
+- [x] view company
+- [x] update company info
+- [x] disable a company
+
+## Department
+### Department Management
+Status: 🟢 Done
+- [x] create a department
+- [x] view department
+- [x] update department info
+- [x] disable a department
+
+## Job Position
+### Job Position Management
+Status: 🟢 Done
+- [x] create a job position
+- [x] view a job position
+- [x] update job position info
+- [x] disable a job position
+
+## Office
+### Office Management
+Status: 🟡 Work In Progress
+- [ ] create an office
+- [ ] view office
+- [ ] update office info
+- [ ] disable a office
+
+## Shift Pattern
+### Shift Pattern Management
+Status: 🟡 Work In Progress
+- [ ] create a shift pattern
+- [ ] view shift pattern
+
+## Employee
+### Employee Management
+Status: 🟢 Done
+
+- [x] register employee 
+- [x] view employee profile
+
+#### Employee Assignment
+- [x] assign registered number
+- [x] assign position
+- [x] assign work location

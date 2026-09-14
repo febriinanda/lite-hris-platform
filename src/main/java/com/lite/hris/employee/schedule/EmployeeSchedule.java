@@ -1,10 +1,12 @@
 package com.lite.hris.employee.schedule;
 
+import com.lite.hris.config.Audit;
 import com.lite.hris.employee.Employee;
 import com.lite.hris.shift.Shift;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,6 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "employee_schedule")
 @Data
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class EmployeeSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +32,9 @@ public class EmployeeSchedule {
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
+
+    @Embedded
+    private Audit audit = new Audit();
 
     public void setup(Shift shift) {
         this.startDate = this.scheduleDate.atTime(shift.getStartTime());

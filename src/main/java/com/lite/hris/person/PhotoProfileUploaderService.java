@@ -1,6 +1,6 @@
 package com.lite.hris.person;
 
-import com.lite.hris.FileUpload.FileUploadService;
+import com.lite.hris.fileUpload.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

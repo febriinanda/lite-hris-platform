@@ -34,6 +34,18 @@ public class ApprovalService {
                 .filter(o -> o.getStatus().equals(ApprovalStatus.APPROVED))
                 .toList();
 
+        checkPreviousWaves(prevWaves);
+
+        if(form.getStatus() == ApprovalStatus.REJECTED){
+            rejected(task, form);
+        }
+
+        if(form.getStatus().equals(ApprovalStatus.APPROVED)){
+            approved(task, form, approvalMaps);
+        }
+    }
+
+    private void checkPreviousWaves(List<ApprovalTask> prevWaves) {
         int minimum = prevWaves.stream()
                 .map(ApprovalTask::getMinimumApprovalThisSequence)
                 .min(Comparator.comparing(o -> o)).orElse(0);
@@ -41,61 +53,59 @@ public class ApprovalService {
         if(prevWaves.size() < minimum){
             throw new RuntimeException("Last wave of approval is not approved properly");
         }
+    }
 
-        if(form.getStatus().equals(ApprovalStatus.REJECTED)){
-            task.setStatus(form.getStatus());
-            approvalTaskRepository.save(task);
+    private void approved(ApprovalTask task, ApprovalForm form, Map<Integer, List<ApprovalTask>> approvalMaps) {
+        task.setStatus(form.getStatus());
+        approvalTaskRepository.save(task);
 
-            if(task.getRequestType().equals(RequestType.LEAVE_TYPE)){
-                Optional<LeaveRequest> requestOptional = leaveRequestRepository.findById(task.getRequestId());
-                if(requestOptional.isPresent()){
-                    LeaveRequest request = requestOptional.get();
-                    request.setStatus(RequestStatus.REJECTED);
-                    leaveRequestRepository.save(request);
+        List<ApprovalTask> currentWaves = approvalMaps.getOrDefault(task.getSequence(), new ArrayList<>())
+                .stream()
+                .filter(o -> o.getStatus().equals(ApprovalStatus.APPROVED))
+                .toList();
+
+        int minimum = currentWaves.stream().map(ApprovalTask::getMinimumApprovalThisSequence)
+                .min(Comparator.comparing(o -> o))
+                .orElse(0);
+
+        if(currentWaves.size()>=minimum){
+            List<ApprovalTask> nextWaves = approvalMaps.getOrDefault(task.getSequence() + 1, new ArrayList<>());
+            if(nextWaves.isEmpty()){
+                if(task.getRequestType() == RequestType.LEAVE_TYPE){
+                    leave(task);
                 }
             }
         }
+    }
 
-        if(form.getStatus().equals(ApprovalStatus.APPROVED)){
-            task.setStatus(form.getStatus());
-            approvalTaskRepository.save(task);
+    private void leave(ApprovalTask task) {
+        Optional<LeaveRequest> requestOptional = leaveRequestRepository.findById(task.getRequestId());
+        if(requestOptional.isPresent()){
+            LeaveRequest request = requestOptional.get();
+            request.setStatus(RequestStatus.APPROVED);
+            leaveRequestRepository.save(request);
 
-            List<ApprovalTask> currentWaves = approvalMaps.getOrDefault(task.getSequence(), new ArrayList<>())
-                    .stream()
-                    .filter(o -> o.getStatus().equals(ApprovalStatus.APPROVED))
-                    .toList();
+            LocalDate start = request.getStartDate();
+            List<LeaveFact> facts = new ArrayList<>();
+            while(!start.isAfter(request.getEndDate())){
+                facts.add(new LeaveFact(request,start));
+                start = start.plusDays(1);
+            }
 
-            minimum = currentWaves.stream().map(ApprovalTask::getMinimumApprovalThisSequence)
-                    .min(Comparator.comparing(o -> o))
-                    .orElse(0);
+            leaveFactRepository.saveAll(facts);
+        }
+    }
 
-            if(currentWaves.size()>=minimum){
-                List<ApprovalTask> nextWaves = approvalMaps.getOrDefault(task.getSequence() + 1, new ArrayList<>());
-                if(nextWaves.isEmpty()){
-                    if(task.getRequestType().equals(RequestType.LEAVE_TYPE)){
-                        Optional<LeaveRequest> requestOptional = leaveRequestRepository.findById(task.getRequestId());
-                        if(requestOptional.isPresent()){
-                            LeaveRequest request = requestOptional.get();
-                            request.setStatus(RequestStatus.APPROVED);
-                            leaveRequestRepository.save(request);
+    private void rejected(ApprovalTask task, ApprovalForm form) {
+        task.setStatus(form.getStatus());
+        approvalTaskRepository.save(task);
 
-                            LocalDate start = request.getStartDate();
-                            List<LeaveFact> facts = new ArrayList<>();
-                            while(!start.isAfter(request.getEndDate())){
-                                LeaveFact f = new LeaveFact();
-                                f.setCode(request.getType().getCode());
-                                f.setReference(request);
-                                f.setEmployee(request.getEmployee());
-                                f.setAttendanceDate(start);
-                                f.setConsumeBalance(request.getType().isConsumeBalance());
-                                facts.add(f);
-                                start = start.plusDays(1);
-                            }
-
-                            leaveFactRepository.saveAll(facts);
-                        }
-                    }
-                }
+        if(task.getRequestType() == RequestType.LEAVE_TYPE){
+            Optional<LeaveRequest> requestOptional = leaveRequestRepository.findById(task.getRequestId());
+            if(requestOptional.isPresent()){
+                LeaveRequest request = requestOptional.get();
+                request.setStatus(RequestStatus.REJECTED);
+                leaveRequestRepository.save(request);
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.lite.hris.FileUpload;
+package com.lite.hris.fileUpload;
 
 import java.time.LocalDateTime;
 

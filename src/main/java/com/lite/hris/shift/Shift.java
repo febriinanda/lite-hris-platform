@@ -1,8 +1,10 @@
 package com.lite.hris.shift;
 
+import com.lite.hris.config.Audit;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalTime;
 
@@ -10,6 +12,7 @@ import java.time.LocalTime;
 @Table(name = "shift")
 @Data
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Shift {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +25,9 @@ public class Shift {
     private int breakDuration;
     private boolean crossDay;
     private boolean deleted;
+
+    @Embedded
+    private Audit audit = new Audit();
 
     public Shift(ShiftDTO form) {
         this.code = form.getCode();

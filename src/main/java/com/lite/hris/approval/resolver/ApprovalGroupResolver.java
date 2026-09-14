@@ -3,18 +3,33 @@ package com.lite.hris.approval.resolver;
 import com.lite.hris.approval.flow.ApprovalFlowItem;
 import com.lite.hris.approval.flow.FlowType;
 import com.lite.hris.approval.group.*;
+import com.lite.hris.approval.group.resolver.ApprovalCountResolver;
 import com.lite.hris.employee.Employee;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class ApprovalGroupResolver implements ApprovalResolver{
     private final ApprovalGroupRepository approvalGroupRepository;
-    private final ApprovalGroupItemRepository approvalGroupItemRepository;
+    private final List<ApprovalCountResolver> resolvers;
+    private Map<ApprovalMode, ApprovalCountResolver> resolverMap;
+
+    @PostConstruct
+    void init(){
+        resolverMap = resolvers.stream()
+                .collect(Collectors.toMap(
+                        ApprovalCountResolver::getMode,
+                        Function.identity()
+                ));
+    }
     @Override
     public FlowType getType() {
         return FlowType.GROUP;
@@ -26,20 +41,10 @@ public class ApprovalGroupResolver implements ApprovalResolver{
         Optional<ApprovalGroup> byId = approvalGroupRepository.findById(item.getReferenceId());
         if(byId.isPresent()){
             ApprovalGroup group = byId.get();
+            int minimumApproval = resolverMap.get(group.getMode())
+                    .resolve(group);
 
-            List<ApprovalGroupItem> byHeader = approvalGroupItemRepository.findByHeader(group);
-            for (ApprovalGroupItem i : byHeader) {
-                r.getEmployees().add(i.getEmployee());
-            }
-
-            if(group.getMode().equals(ApprovalMode.ANY))
-                r.setMinimumApproval(1);
-
-            if(group.getMode().equals(ApprovalMode.MINIMUM))
-                r.setMinimumApproval(group.getMinimumApproval());
-
-            if(group.getMode().equals(ApprovalMode.ALL))
-                r.setMinimumApproval(r.getEmployees().size());
+            r.setMinimumApproval(minimumApproval);
         }
         return r;
     }

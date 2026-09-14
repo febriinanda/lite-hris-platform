@@ -1,17 +1,18 @@
 package com.lite.hris.employee.leave.transaction;
 
+import com.lite.hris.config.Audit;
 import com.lite.hris.employee.Employee;
 import com.lite.hris.employee.leave.grant.EmployeeLeaveGrant;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Data
 @Table(name = "employee_leave_transaction")
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class EmployeeLeaveTransaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +34,7 @@ public class EmployeeLeaveTransaction {
     private long referenceId;
     private int amount;
     private String remarks;
-    private String createdBy;
-    private LocalDateTime createdAt;
+
+    @Embedded
+    private Audit audit = new Audit();
 }

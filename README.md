@@ -17,10 +17,6 @@ Out of Scope:
 - OAuth2 Authorization Server
 - JWT Authentication
 - Event-driven communication
-- Audit Logging
-- Flyway Database Migration
-- Dockerized Deployment
-- CI/CD Pipeline
 
 ## Architecture
 ### Backend
@@ -29,9 +25,6 @@ Out of Scope:
 - Spring Security
 - Spring Data JPA
 - MySQL
-- Redis
-- Kafka
-- Flyway
 
 ## Planned Technical Modules
 
@@ -47,10 +40,10 @@ Out of Scope:
 - Employee document storage
 - Profile photo storage
 
-### Security ⚪
+### Security 🟡
 - Role Based Access Control (RBAC)
-- OAuth2 Authorization Server
-- JWT Authentication
+- OAuth2 Authorization Server 🟢
+- JWT Authentication 🟢
 
 ## Features
 ### Employee Management 🟢
@@ -70,17 +63,14 @@ Out of Scope:
 - Reporting structure
 
 ### Leave Management 🟡
-- Annual leave
-- Sick leave
-- Special leave
 - Leave balance tracking
 - Leave approval workflow 🟢
 
-### Employee Self Service (ESS) 🟡
+### Employee Self Service (ESS) 🟢
 - View profile 🟢
 - Update personal information 🟢
 - Submit leave request 🟢
-- View attendance history
+- View attendance history 🟢
 
 ### Approval Workflow 🟡
 - Multi level approval 🟢

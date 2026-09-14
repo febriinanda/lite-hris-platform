@@ -1,14 +1,17 @@
 package com.lite.hris.office;
 
 import com.lite.hris.company.Company;
+import com.lite.hris.config.Audit;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "office")
 @Data
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Office {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +28,9 @@ public class Office {
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
+
+    @Embedded
+    private Audit audit = new Audit();
 
     public Office(OfficeDTO form) {
         this.name = form.getName();

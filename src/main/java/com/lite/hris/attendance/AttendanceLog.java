@@ -1,9 +1,11 @@
 package com.lite.hris.attendance;
 
+import com.lite.hris.config.Audit;
 import com.lite.hris.employee.Employee;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @Table(name = "attendance_log")
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class AttendanceLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +24,9 @@ public class AttendanceLog {
     private Employee employee;
 
     private LocalDateTime time;
+
+    @Embedded
+    private Audit audit = new Audit();
 
     public AttendanceLog(AttendanceClockRequest form) {
         this.employee = form.getEmployee();
