@@ -17,10 +17,6 @@ Out of Scope:
 - OAuth2 Authorization Server
 - JWT Authentication
 - Event-driven communication
-- Audit Logging
-- Flyway Database Migration
-- Dockerized Deployment
-- CI/CD Pipeline
 
 ## Architecture
 ### Backend
@@ -29,9 +25,6 @@ Out of Scope:
 - Spring Security
 - Spring Data JPA
 - MySQL
-- Redis
-- Kafka
-- Flyway
 
 ## Planned Technical Modules
 
