@@ -8,6 +8,7 @@ Status: 🟢 Done
 - [x] change birthday
 - [x] update gender
 - [x] update photo profile
+- [x] update contact information
 - [x] disable person
 
 ## Company

@@ -24,6 +24,9 @@ public class Person implements HasFileUpload {
     private LocalDate birthDate;
     private String gender;
     private boolean deleted;
+    private String phone;
+    private String mobile;
+    private String email;
 
     private String fileName;
     private String filePath;
@@ -47,5 +50,11 @@ public class Person implements HasFileUpload {
 
     public void delete() {
         this.deleted = true;
+    }
+
+    public void update(PersonalContactInformation contact) {
+        this.phone = contact.getPhone();
+        this.mobile = contact.getMobile();
+        this.email = contact.getEmail();
     }
 }
