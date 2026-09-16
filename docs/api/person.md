@@ -88,6 +88,21 @@ Update a person's gender.
   "birthDate": null
 }
 ```
+### Update Contact Information
+`PATCH /person/{id}/contact`
+Update a person's contact information.
+#### Path Parameter
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| id        | long | Yes      | Person ID   |
+#### Request
+```json
+{
+  "phone": "080-665660",
+  "mobile": "+6285318561515",
+  "email": "teresa.lisbon@gmail.com"
+}
+```
 ### Update Photo Profile
 `PATCH /person/{id}/photo/profile`
 Update a person's photo profile.
