@@ -49,14 +49,14 @@ Status legend:
 - Change birthday
 - Update gender
 - Update profile photo
-- Manage person contact information 🔴
+- Manage person contact information 
 - Disable person
 
 ### Expected outcome
 
 > HR can create and maintain a person's basic identity information.
 
-**Status:** 🟡 Partial
+**Status:** 🟢 Done
 
 ---
 ## 3. Employee Management
@@ -77,7 +77,7 @@ Status legend:
 
 > HR can manage a person as an employee within the company.
 
-**Status:** 🟡 Partial
+**Status:** 🟢 Done
 
 ---
 ## 4. Employment Management
