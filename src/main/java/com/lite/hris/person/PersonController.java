@@ -13,6 +13,7 @@ import java.util.List;
 public class PersonController {
     private final PersonService service;
     private final PhotoProfileUploaderService photoProfileUploader;
+    private final PersonalContactInformationService personalContactInformationService;
 
     @GetMapping
     public List<Person> findAll(){
@@ -57,5 +58,10 @@ public class PersonController {
     @PatchMapping("/{id}/photo/profile")
     public void uploadPhotoProfile(@PathVariable long id, @RequestPart("file")MultipartFile file) throws IOException {
         photoProfileUploader.upload(id, file);
+    }
+
+    @PatchMapping("/{id}/contact")
+    public void updateContact(@PathVariable long id, @RequestBody PersonalContactInformation form){
+        personalContactInformationService.update(id, form);
     }
 }
